@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:hyper_ui/module/transaction_page/add_report_page.dart';
 import 'package:hyper_ui/module/transaction_page/object/report.dart';
 import 'package:hyper_ui/module/transaction_page/object/report_item.dart';
-import 'package:hyper_ui/module/transaction_page/report_detail_page.dart';
 
 class ReportPage extends StatefulWidget {
   const ReportPage({super.key});
@@ -19,7 +15,7 @@ class _ReportPageState extends State<ReportPage> {
   List<Report> _foundReport = [];
   final _reportController = TextEditingController();
   final reportList = Report.reportList();
-  
+
   @override
   void initState() {
     _foundReport = reportsList;
@@ -72,42 +68,45 @@ class _ReportPageState extends State<ReportPage> {
               ))
             ],
           )),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 300,
-                  height: 50,
-                  margin: const EdgeInsets.only(
-                    bottom: 30,
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                        builder: (context) => AddReportPage(),
-                      ))
-                          .then((value) {
-                        setState(() {});
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 50),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 300,
+                    height: 50,
+                    margin: const EdgeInsets.only(
+                      bottom: 30,
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                          builder: (context) => AddReportPage(),
+                        ))
+                            .then((value) {
+                          setState(() {});
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple,
 
-                      // minimumSize: const Size(120, 60),
-                      elevation: 10,
+                        // minimumSize: const Size(120, 60),
+                        elevation: 10,
+                      ),
+                      child: const Text(
+                        'Add new report',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
-                    child: const Text(
-                      'Add new report',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

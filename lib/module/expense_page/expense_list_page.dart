@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hyper_ui/core.dart';
 import 'package:hyper_ui/module/expense_page/add_expense_page.dart';
 import 'package:hyper_ui/module/expense_page/expense_detail_page.dart';
 
@@ -61,40 +59,43 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
               )),
             ],
           )),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 300,
-                  height: 50,
-                  margin: const EdgeInsets.only(
-                    bottom: 30,
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                        builder: (context) => AddExpensePage(),
-                      ))
-                          .then((value) {
-                        setState(() {});
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF9B51E0),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 50),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 300,
+                    height: 50,
+                    margin: const EdgeInsets.only(
+                      bottom: 30,
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                          builder: (context) => AddExpensePage(),
+                        ))
+                            .then((value) {
+                          setState(() {});
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF9B51E0),
 
-                      // minimumSize: const Size(120, 60),
-                      elevation: 10,
+                        // minimumSize: const Size(120, 60),
+                        elevation: 10,
+                      ),
+                      child: const Text(
+                        'Add new expense',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
-                    child: const Text(
-                      'Add new expense',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           )
         ],
@@ -143,8 +144,8 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
 
   Widget searchBox() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),

@@ -1,10 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
 
+import '../../expense_page/expense_detail_page.dart';
+
 class DashboardView extends StatefulWidget {
   DashboardView({Key? key}) : super(key: key);
 
   Widget build(context, DashboardController controller) {
+    Widget expenseItem() {
+      return InkWell(
+        onTap: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(
+                builder: (context) => ExpenseDetailPage(),
+              ))
+              .then((value) {});
+          ;
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Card(
+            elevation: 1,
+            child: ListTile(
+              trailing: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Primer",
+                    style: TextStyle(color: Color(0xFF9B51E0)),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Rp50,000,000"),
+                ],
+              ),
+              title: Text("Pembayaran Kost"),
+              subtitle: Text("18 Agustus 2023"),
+            ),
+          ),
+        ),
+      );
+    }
+
     controller.view = this;
     ScrollController _scrollController = ScrollController();
     return Scaffold(
@@ -18,6 +57,8 @@ class DashboardView extends StatefulWidget {
         child: Column(
           children: [
             Container(
+              width: MediaQuery.of(context).size.width,
+              height: 150,
               color: Color(0xFF9B51E0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,35 +75,40 @@ class DashboardView extends StatefulWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(30, 40, 30, 0),
-                      child: Expanded(
-                        child: Container(
-                          height: 100,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20)),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Spennding on June 2022",
-                                style: TextStyle(
-                                  fontSize: 13.0,
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        child: Expanded(
+                          child: Container(
+                            height: 80,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 248, 245, 245),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 17,
                                 ),
-                              ),
-                              Text(
-                                "325.000.000",
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  "Spennding on June 2022",
+                                  style: TextStyle(
+                                    fontSize: 17.0,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  "325.000.000",
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -176,9 +222,6 @@ class DashboardView extends StatefulWidget {
                 },
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
             Padding(
               padding: const EdgeInsets.only(left: 20),
               child: SizedBox(
@@ -234,6 +277,15 @@ class DashboardView extends StatefulWidget {
                 ),
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            expenseItem(),
+            expenseItem(),
+            expenseItem(),
+            SizedBox(
+              height: 70,
+            )
           ],
         ),
       ),
