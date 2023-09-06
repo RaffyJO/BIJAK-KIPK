@@ -70,6 +70,7 @@ class LoginFormView extends StatefulWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
+
                                   builder: (context) =>
                                       FloatMainNavigationView()),
                             );
@@ -78,6 +79,7 @@ class LoginFormView extends StatefulWidget {
                     SizedBox(
                       height: 20,
                     ),
+                    SizedBox(height: 10),
                     Container(
                       width: 150,
                       height: 50,
