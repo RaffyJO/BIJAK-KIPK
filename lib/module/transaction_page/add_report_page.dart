@@ -95,6 +95,12 @@ class _AddReportPageState extends State<AddReportPage> {
               hint: "Type description issue",
               onChanged: (value) {},
             ),
+            QImagePicker(
+              label: "Photo",
+              validator: Validator.required,
+              value: null,
+              onChanged: (value) {},
+            ),
             SizedBox(
               height: 15,
             ),

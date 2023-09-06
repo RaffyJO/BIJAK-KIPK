@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
+import 'package:hyper_ui/module/expense_page/expense_list_page.dart';
 
 class FloatMainNavigationView extends StatefulWidget {
   const FloatMainNavigationView({Key? key}) : super(key: key);
@@ -22,12 +23,8 @@ class _FloatMainNavigationViewState extends State<FloatMainNavigationView> {
           index: selectedIndex,
           children: [
             DashboardView(),
-            Container(
-              color: Colors.red[100],
-            ),
-            Container(
-              color: Colors.purple[100],
-            ),
+            ExpenseListPage(),
+            ReportPage(),
             ProfileView()
           ],
         ),

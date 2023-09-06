@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+
 import '../view/dashboard_view.dart';
 
 class DashboardController extends State<DashboardView> {
   static late DashboardController instance;
   late DashboardView view;
+
+  get products => null;
 
   @override
   void initState() {
