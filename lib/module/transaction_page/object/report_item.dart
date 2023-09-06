@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/module/transaction_page/object/report.dart';
 import 'package:hyper_ui/module/transaction_page/report_detail_page.dart';
-import 'package:hyper_ui/shared/theme/theme_config.dart';
 
 class ReportItem extends StatefulWidget {
   final Report report;
