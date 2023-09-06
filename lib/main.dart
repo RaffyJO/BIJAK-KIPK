@@ -30,11 +30,12 @@ class MainApp extends StatelessWidget {
       title: 'Capek Ngoding',
       // navigatorKey: Get.navigatorKey,3
       debugShowCheckedModeBanner: false,
-      // theme: getDefaultTheme(),
+      // theme: getDefaultTheme()
 
 
 
       home: LoginFormView(),
+
 
     );
   }

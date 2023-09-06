@@ -120,7 +120,7 @@ class _ReportItemState extends State<ReportItem> {
                     )),
               ],
             ),
-            title: Text(""),
+            title: Text("Teks"),
           ),
         ),
       ),

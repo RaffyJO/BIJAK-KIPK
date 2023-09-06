@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hyper_ui/module/transaction_page/add_report_page.dart';
+import 'package:hyper_ui/module/transaction_page/object/report.dart';
+import 'package:hyper_ui/module/transaction_page/object/report_item.dart';
 import 'package:hyper_ui/module/transaction_page/report_detail_page.dart';
 
 class ReportPage extends StatefulWidget {
@@ -13,59 +15,15 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
-  void openDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Text(
-                      "Penyalahgunaan KIP-K 1",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Text(
-                      "Are you sure to delete this report?",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,
-                          elevation: 10,
-                        ),
-                        onPressed: () {},
-                        child: Text("Cancel"),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          elevation: 10,
-                        ),
-                        onPressed: () {},
-                        child: Text("Delete"),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
+  final reportsList = Report.reportList();
+  List<Report> _foundReport = [];
+  final _reportController = TextEditingController();
+  final reportList = Report.reportList();
+  
+  @override
+  void initState() {
+    _foundReport = reportsList;
+    super.initState();
   }
 
   @override
@@ -104,16 +62,12 @@ class _ReportPageState extends State<ReportPage> {
               Expanded(
                   child: ListView(
                 children: [
-                  reportItem(),
-                  reportItem(),
-                  reportItem(),
-                  reportItem(),
-                  reportItem(),
-                  reportItem(),
-                  reportItem(),
-                  reportItem(),
-                  reportItem(),
-                  reportItem()
+                  for (Report report in _foundReport.reversed)
+                    ReportItem(
+                      report: report,
+                      // onToDoChanged: _handleToDoChange,
+                      // onDeleteItem: _delatedToDoItem,
+                    ),
                 ],
               ))
             ],
@@ -159,54 +113,21 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
-  Widget reportItem() {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(
-          builder: (context) => ReportDetailPage(),
-        ))
-            .then((value) {
-          setState(() {});
-        });
-        ;
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Card(
-          elevation: 1,
-          child: ListTile(
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white, elevation: 0),
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.grey,
-                    )),
-                SizedBox(
-                  width: 5,
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white, elevation: 0),
-                    onPressed: () {
-                      openDialog();
-                    },
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.grey,
-                    )),
-              ],
-            ),
-            title: const Text("Report pelanggaran KIP-K 1"),
-          ),
-        ),
-      ),
-    );
+  void _runFilter(String enteredKeyword) {
+    List<Report> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = reportsList;
+    } else {
+      results = reportsList
+          .where((item) => item.reportName!
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      _foundReport = results;
+    });
   }
 
   Widget searchBox() {
@@ -218,8 +139,8 @@ class _ReportPageState extends State<ReportPage> {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.grey),
       ),
-      child: const TextField(
-        // onChanged: ((value) => _runFilter(value)),
+      child: TextField(
+        onChanged: ((value) => _runFilter(value)),
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
             contentPadding: EdgeInsets.all(0),
