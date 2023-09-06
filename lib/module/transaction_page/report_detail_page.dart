@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hyper_ui/core.dart';
 
 class ReportDetailPage extends StatefulWidget {
   const ReportDetailPage({super.key});
@@ -151,8 +152,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
                   ),
                   Text(
                     "Attachment",
-                    style: TextStyle(
-                        color: Colors.black),
+                    style: TextStyle(color: Colors.black),
                   ),
                   SizedBox(
                     height: 15,

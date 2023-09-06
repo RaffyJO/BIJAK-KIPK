@@ -103,32 +103,41 @@ class _AddReportPageState extends State<AddReportPage> {
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
             ),
-            SizedBox(
+             SizedBox(
               height: 15,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  height: 120,
-                  width: 100,
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.grey)),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                    ),
-                    onPressed: () async {},
-                    child: Text(
-                      "Upload Image (Max 5 MB)",
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            QImagePicker(
+              label: "Photo",
+              validator: Validator.required,
+              value: null,
+              onChanged: (value) {},
             ),
+            // SizedBox(
+            //   height: 15,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Container(
+            //       height: 120,
+            //       width: 100,
+            //       decoration:
+            //           BoxDecoration(border: Border.all(color: Colors.grey)),
+            //       child: ElevatedButton(
+            //         style: ElevatedButton.styleFrom(
+            //           backgroundColor: Colors.white,
+            //         ),
+            //         onPressed: () async {},
+            //         child: Text(
+            //           "Upload Image (Max 5 MB)",
+            //           style: TextStyle(
+            //             color: Colors.grey,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             SizedBox(
               height: 15,
             ),

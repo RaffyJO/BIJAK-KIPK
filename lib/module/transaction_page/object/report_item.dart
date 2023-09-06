@@ -9,11 +9,11 @@ class ReportItem extends StatefulWidget {
   // final onDeleteItem;
 
   const ReportItem({
-    super.key,
+    Key? key,
     required this.report,
     // required this.onToDoChanged,
     // required this.onDeleteItem
-  });
+  }) : super(key: key);
 
   @override
   State<ReportItem> createState() => _ReportItemState();
@@ -77,7 +77,6 @@ class _ReportItemState extends State<ReportItem> {
 
   @override
   Widget build(BuildContext context) {
-    
     return InkWell(
       onTap: () {
         Navigator.of(context)
