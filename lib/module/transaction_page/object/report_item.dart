@@ -8,11 +8,11 @@ class ReportItem extends StatefulWidget {
   // final onDeleteItem;
 
   const ReportItem({
-    super.key,
+    Key? key,
     required this.report,
     // required this.onToDoChanged,
     // required this.onDeleteItem
-  });
+  }) : super(key: key);
 
   @override
   State<ReportItem> createState() => _ReportItemState();

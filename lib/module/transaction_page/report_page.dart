@@ -35,7 +35,7 @@ class _ReportPageState extends State<ReportPage> {
                 width: MediaQuery.of(context).size.width,
                 height: 100,
                 decoration: const BoxDecoration(
-                  color: Colors.purple,
+                  color: Color(0xFF9B51E0),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -58,9 +58,9 @@ class _ReportPageState extends State<ReportPage> {
               Expanded(
                   child: ListView(
                 children: [
-                  for (Report report in _foundReport.reversed)
+                  for (Report iReport in _foundReport.reversed)
                     ReportItem(
-                      report: report,
+                      report: iReport,
                       // onToDoChanged: _handleToDoChange,
                       // onDeleteItem: _delatedToDoItem,
                     ),
@@ -92,7 +92,7 @@ class _ReportPageState extends State<ReportPage> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
+                        backgroundColor: Color(0xFF9B51E0),
 
                         // minimumSize: const Size(120, 60),
                         elevation: 10,

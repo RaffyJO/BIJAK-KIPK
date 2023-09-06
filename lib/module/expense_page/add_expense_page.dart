@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hyper_ui/core.dart';
 import 'package:hyper_ui/shared/util/validator/validator.dart';
 import 'package:hyper_ui/shared/widget/form/date_picker/datepicker.dart';
 import 'package:hyper_ui/shared/widget/form/textfield/text_field.dart';
@@ -100,29 +101,35 @@ class _AddExpensePageState extends State<AddExpensePage> {
             SizedBox(
               height: 15,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  height: 120,
-                  width: 100,
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.grey)),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                    ),
-                    onPressed: () async {},
-                    child: Text(
-                      "Upload Image (Max 5 MB)",
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            QImagePicker(
+              label: "Photo",
+              validator: Validator.required,
+              value: null,
+              onChanged: (value) {},
             ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Container(
+            //       height: 120,
+            //       width: 100,
+            //       decoration:
+            //           BoxDecoration(border: Border.all(color: Colors.grey)),
+            //       child: ElevatedButton(
+            //         style: ElevatedButton.styleFrom(
+            //           backgroundColor: Colors.white,
+            //         ),
+            //         onPressed: () async {},
+            //         child: Text(
+            //           "Upload Image (Max 5 MB)",
+            //           style: TextStyle(
+            //             color: Colors.grey,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             SizedBox(
               height: 15,
             ),
