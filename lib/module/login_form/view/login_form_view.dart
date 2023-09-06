@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_ui/module/button_navigator/button_navigation_bar.dart';
 import 'package:hyper_ui/module/login_form/view/signup_form_view.dart';
 
 import '../../../core.dart';
@@ -10,6 +11,7 @@ class LoginFormView extends StatefulWidget {
   Widget build(context, LoginFormController controller) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xFF9B51E0),
           title: const Text("LogIn Form"),
           actions: const [],
         ),
@@ -68,19 +70,29 @@ class LoginFormView extends StatefulWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignUpFormView()),
+
+                                  builder: (context) =>
+                                      FloatMainNavigationView()),
                             );
                           }),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     SizedBox(height: 10),
                     Container(
                       width: 150,
                       height: 50,
                       child: QButton(
-                        label: "SignUp",
-                        color: Color(0xFF9B51E0),
-                        onPressed: () => SignUpFormView(),
-                      ),
+                          label: "SignUp",
+                          color: Color(0xFF9B51E0),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpFormView()),
+                            );
+                          }),
                     ),
                     SizedBox(
                       height: 20,
