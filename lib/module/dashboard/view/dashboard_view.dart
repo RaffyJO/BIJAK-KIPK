@@ -1,49 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
+import 'package:hyper_ui/module/expense_page/object/expense_item.dart';
 
-import '../../expense_page/expense_detail_page.dart';
+import 'chart_data_model.dart';
 
 class DashboardView extends StatefulWidget {
   DashboardView({Key? key}) : super(key: key);
 
   Widget build(context, DashboardController controller) {
-    Widget expenseItem() {
-      return InkWell(
-        onTap: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(
-                builder: (context) => ExpenseDetailPage(),
-              ))
-              .then((value) {});
-          ;
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Card(
-            elevation: 1,
-            child: ListTile(
-              trailing: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Primer",
-                    style: TextStyle(color: Color(0xFF9B51E0)),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text("Rp50,000,000"),
-                ],
-              ),
-              title: Text("Pembayaran Kost"),
-              subtitle: Text("18 Agustus 2023"),
-            ),
-          ),
-        ),
-      );
-    }
-
+    final now = DateTime.now();
+    final monthFormat = DateFormat.MMMM();
+    final monthName = monthFormat.format(now);
+    String monthnow = monthName;
+    final chartData = ChartDataModel.chartData;
     controller.view = this;
     ScrollController _scrollController = ScrollController();
     return Scaffold(
@@ -58,7 +27,7 @@ class DashboardView extends StatefulWidget {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 150,
+              height: 170,
               color: Color(0xFF9B51E0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,35 +49,56 @@ class DashboardView extends StatefulWidget {
                     child: Container(
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-                        child: Expanded(
-                          child: Container(
-                            height: 80,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 248, 245, 245),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                            ),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 17,
+                        child: Container(
+                          height: 100,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 17,
+                              ),
+                              Text(
+                                "Spending on $monthnow 2023",
+                                style: TextStyle(
+                                  fontSize: 17.0,
                                 ),
-                                Text(
-                                  "Spennding on June 2022",
-                                  style: TextStyle(
-                                    fontSize: 17.0,
-                                  ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: 1,
+                                  itemBuilder: (context, index) {
+                                    final totalmonthnow = chartData
+                                        .where((data) =>
+                                            data["month"] == "$monthnow")
+                                        .toList();
+                                    num total = 0;
+                                    for (final data in totalmonthnow) {
+                                      total += data["data"]["primer"] +
+                                          data["data"]["sekunder"] +
+                                          data["data"]["tersier"] +
+                                          data["data"]["pendidikan"].toInt();
+                                    }
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "RP$total" "000",
+                                        style: TextStyle(
+                                          fontSize: 25.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                Text(
-                                  "325.000.000",
-                                  style: TextStyle(
-                                    fontSize: 25.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -118,66 +108,16 @@ class DashboardView extends StatefulWidget {
               ),
             ),
             Container(
-              height: 300,
+              height: 270,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 color: Colors.white,
               ),
               child: Builder(
                 builder: (context) {
-                  final List<Map<String, dynamic>> chartData = [
-                    {
-                      "month": "January",
-                      "sales": 40,
-                    },
-                    {
-                      "month": "February",
-                      "sales": 90,
-                    },
-                    {
-                      "month": "Maret",
-                      "sales": 30,
-                    },
-                    {
-                      "month": "April",
-                      "sales": 80,
-                    },
-                    {
-                      "month": "Mei",
-                      "sales": 150,
-                    },
-                    {
-                      "month": "Juni",
-                      "sales": 150,
-                    },
-                    {
-                      "month": "July",
-                      "sales": 150,
-                    },
-                    {
-                      "month": "Agustus",
-                      "sales": 150,
-                    },
-                    {
-                      "month": "September",
-                      "sales": 150,
-                    },
-                    {
-                      "month": "Oktober",
-                      "sales": 150,
-                    },
-                    {
-                      "month": "November",
-                      "sales": 150,
-                    },
-                    {
-                      "month": "Desember",
-                      "sales": 150,
-                    },
-                  ];
                   return Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.only(left: 10),
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         controller: _scrollController,
@@ -193,22 +133,67 @@ class DashboardView extends StatefulWidget {
                             itemBuilder: (context, index) {
                               final data = chartData[index];
                               return Container(
-                                width: 60,
-                                margin: EdgeInsets.symmetric(horizontal: 4.0),
+                                height: 100,
+                                width: 80,
+                                margin: EdgeInsets.symmetric(horizontal: 10.0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Container(
-                                      height: 25 * data["sales"] / 17,
-                                      width: 70,
-                                      color: Color(0xFF9B51E0),
-                                    ),
-                                    SizedBox(height: 10.0),
+                                    Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            height: (data["data"]["primer"] +
+                                                    data["data"]["sekunder"] +
+                                                    data["data"]["tersier"] +
+                                                    data["data"]
+                                                        ["pendidikan"]) *
+                                                data["data"]["primer"] /
+                                                40,
+                                            width: 20,
+                                            color: Colors.blue,
+                                          ),
+                                          Container(
+                                            height: (data["data"]["primer"] +
+                                                    data["data"]["sekunder"] +
+                                                    data["data"]["tersier"] +
+                                                    data["data"]
+                                                        ["pendidikan"]) *
+                                                data["data"]["sekunder"] /
+                                                40,
+                                            width: 20,
+                                            color: Colors.yellow,
+                                          ),
+                                          Container(
+                                            height: (data["data"]["primer"] +
+                                                    data["data"]["sekunder"] +
+                                                    data["data"]["tersier"] +
+                                                    data["data"]
+                                                        ["pendidikan"]) *
+                                                data["data"]["tersier"] /
+                                                40,
+                                            width: 20,
+                                            color: Colors.red,
+                                          ),
+                                          Container(
+                                            height: (data["data"]["primer"] +
+                                                    data["data"]["sekunder"] +
+                                                    data["data"]["tersier"] +
+                                                    data["data"]
+                                                        ["pendidikan"]) *
+                                                data["data"]["pendidikan"] /
+                                                40,
+                                            width: 20,
+                                            color: Colors.green,
+                                          ),
+                                        ]),
+                                    SizedBox(height: 15.0),
                                     Container(
                                         height: 25,
                                         child: Text(
                                           data["month"],
-                                          style: TextStyle(fontSize: 12),
+                                          style: TextStyle(fontSize: 15),
                                         )),
                                   ],
                                 ),
@@ -222,67 +207,88 @@ class DashboardView extends StatefulWidget {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: SizedBox(
-                height: 76.0,
-                child: ListView.builder(
-                  itemCount: 3,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    var item = {};
-                    List<String> nama = ['Primer', 'Pendidikan', 'Sekuder'];
-                    return Container(
-                      width: 160,
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      margin: EdgeInsets.only(right: 10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(16.0),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: Text(
-                                "${nama[index]}",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15.0,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 9,
-                            ),
-                            Container(
-                              child: Text(
-                                "Rp.94,000,000",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: 15.0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+            Container(
+              padding: EdgeInsets.only(left: 20),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(
+                  "Pengeluaran di Bulan $monthName",
+                  style: TextStyle(
+                    fontSize: 17.0,
+                  ),
                 ),
-              ),
+              ]),
             ),
             SizedBox(
               height: 10,
             ),
-            expenseItem(),
-            expenseItem(),
-            expenseItem(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: SizedBox(
+                  height: 76.0,
+                  child: ListView.builder(
+                    itemCount: 1,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final data = chartData.firstWhere(
+                          (element) => element["month"] == "$monthnow");
+                      List<String> kebutuhan = [
+                        'Primer',
+                        'Sekunder',
+                        'Tersier',
+                        'Pendidikan'
+                      ];
+
+                      return Row(
+                        children: kebutuhan.map((jenis) {
+                          return Container(
+                            width: 160,
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            margin: EdgeInsets.only(right: 10.0),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16.0),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    jenis,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 9,
+                                  ),
+                                  Text(
+                                    "${data["data"][jenis.toLowerCase()]}",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    },
+                  )),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ExpenseItem(),
+            ExpenseItem(),
+            ExpenseItem(),
             SizedBox(
               height: 70,
             )
