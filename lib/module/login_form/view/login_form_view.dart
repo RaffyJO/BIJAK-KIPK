@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_ui/module/button_navigator/button_navigation_bar.dart';
-import 'package:hyper_ui/module/login_form/view/signup_form_view.dart';
 
 import '../../../core.dart';
-import '../controller/login_form_controller.dart';
 
 class LoginFormView extends StatefulWidget {
   const LoginFormView({Key? key}) : super(key: key);
@@ -42,7 +39,9 @@ class LoginFormView extends StatefulWidget {
                       validator: Validator.email,
                       suffixIcon: Icons.email,
                       helper: "Masukkan Email Anda",
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        controller.email = value;
+                      },
                     ),
                     SizedBox(
                       height: 20,
@@ -54,33 +53,37 @@ class LoginFormView extends StatefulWidget {
                       validator: Validator.required,
                       suffixIcon: Icons.remove_red_eye_outlined,
                       // isObscured: ob,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        controller.password = value;
+                      },
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     Container(
-                      width: 150,
+                      width: 170,
                       height: 50,
                       child: QButton(
                           label: "LogIn",
                           color: Color(0xFF9B51E0),
-                          // onPressed: () => SignUpFormView(),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      FloatMainNavigationView()),
-                            );
-                          }),
+                          onPressed: () => controller.DoEmailLogin()),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 9,
                     ),
-                    SizedBox(height: 10),
                     Container(
-                      width: 150,
+                      width: 170,
+                      height: 50,
+                      child: QButton(
+                          label: "LogIn with Google",
+                          color: Color(0xFF9B51E0),
+                          onPressed: () => controller.DoGoogleLogin()),
+                    ),
+                    SizedBox(
+                      height: 9,
+                    ),
+                    Container(
+                      width: 170,
                       height: 50,
                       child: QButton(
                           label: "SignUp",

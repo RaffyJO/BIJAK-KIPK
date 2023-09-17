@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../core.dart';
-import '../controller/sign_up_controller.dart';
 
 class SignUpFormView extends StatefulWidget {
   const SignUpFormView({Key? key}) : super(key: key);
