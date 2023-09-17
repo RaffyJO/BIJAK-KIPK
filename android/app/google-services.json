@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "592444364782",
+    "project_id": "bijak-kipk-fd929",
+    "storage_bucket": "bijak-kipk-fd929.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592444364782:android:ac332bb48ef79a3e0ca0ff",
+        "android_client_info": {
+          "package_name": "com.example.hyper_ui"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFjyBCNFx-rJgnHhhn3d3IEG-UcWp-Ruk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

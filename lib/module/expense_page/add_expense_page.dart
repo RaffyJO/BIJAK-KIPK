@@ -13,6 +13,13 @@ class AddExpensePage extends StatefulWidget {
 }
 
 class _AddExpensePageState extends State<AddExpensePage> {
+  final List<String> categories = [
+    "Primer",
+    "Sekunder",
+    "Tersier",
+    "Pendidikan"
+  ];
+  late String dropDownValue = categories.first;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,12 +63,21 @@ class _AddExpensePageState extends State<AddExpensePage> {
             SizedBox(
               height: 15,
             ),
-            QTextField(
-              label: "Category",
-              validator: Validator.required,
-              hint: "Select category",
-              onChanged: (value) {},
+            Text(
+              "Category",
+              style: TextStyle(color: Color(0xFF9B51E0), fontSize: 13),
             ),
+            DropdownButton<String>(
+                hint: Text("Select category"),
+                isExpanded: true,
+                value: dropDownValue,
+                items: categories.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? value) {}),
             SizedBox(
               height: 15,
             ),

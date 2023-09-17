@@ -46,16 +46,16 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
               Expanded(
                   child: ListView(
                 children: [
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
                 ],
               )),
             ],
@@ -85,8 +85,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF9B51E0),
-          
-
 
                         // minimumSize: const Size(120, 60),
                         elevation: 10,
@@ -106,7 +104,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
     );
   }
 
-  
   Widget searchBox() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),

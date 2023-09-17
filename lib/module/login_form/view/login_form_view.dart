@@ -70,7 +70,6 @@ class LoginFormView extends StatefulWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-
                                   builder: (context) =>
                                       FloatMainNavigationView()),
                             );
