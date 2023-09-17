@@ -1,14 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
 import 'package:hyper_ui/module/login_form/view/login_form_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runMainApp();
-}
-
-runMainApp() async {
-  return runApp(const MainApp());
+  await Firebase.initializeApp();
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {

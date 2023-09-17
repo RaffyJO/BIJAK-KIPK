@@ -109,7 +109,7 @@ class _AddReportPageState extends State<AddReportPage> {
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
             ),
-             SizedBox(
+            SizedBox(
               height: 15,
             ),
             QImagePicker(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
-import 'package:hyper_ui/module/expense_page/expense_list_page.dart';
+import 'package:hyper_ui/module/dashboard/view/dashboard_view2.dart';
 
 class FloatMainNavigationView extends StatefulWidget {
   const FloatMainNavigationView({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _FloatMainNavigationViewState extends State<FloatMainNavigationView> {
         body: IndexedStack(
           index: selectedIndex,
           children: [
-            DashboardView(),
+            DashboardView2(),
             ExpenseListPage(),
             ReportPage(),
             ProfileView()

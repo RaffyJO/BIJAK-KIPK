@@ -143,8 +143,7 @@ class _ExpenseDetailPageState extends State<ExpenseDetailPage> {
                   ),
                   Text(
                     "Attachment",
-                    style: TextStyle(
-                        color: Colors.black),
+                    style: TextStyle(color: Colors.black),
                   ),
                   SizedBox(
                     height: 15,

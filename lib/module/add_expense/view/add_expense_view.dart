@@ -1,20 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
-import 'package:hyper_ui/shared/util/validator/validator.dart';
-import 'package:hyper_ui/shared/widget/form/date_picker/datepicker.dart';
-import 'package:hyper_ui/shared/widget/form/textfield/text_field.dart';
 
-class AddExpensePage extends StatefulWidget {
-  const AddExpensePage({super.key});
+class AddExpensePageView extends StatefulWidget {
+  const AddExpensePageView({Key? key}) : super(key: key);
 
-  @override
-  State<AddExpensePage> createState() => _AddExpensePageState();
-}
-
-class _AddExpensePageState extends State<AddExpensePage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(context, AddExpenseController controller) {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -51,7 +41,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
               label: "Expense Name",
               validator: Validator.required,
               hint: "Type expense name",
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.nama = (value);
+              },
             ),
             SizedBox(
               height: 15,
@@ -60,7 +52,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
               label: "Category",
               validator: Validator.required,
               hint: "Select category",
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.category = (value);
+              },
             ),
             SizedBox(
               height: 15,
@@ -69,26 +63,20 @@ class _AddExpensePageState extends State<AddExpensePage> {
               label: "Item Name",
               validator: Validator.required,
               hint: "Type item name",
-              onChanged: (value) {},
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            QDatePicker(
-              label: "Date",
-              validator: Validator.required,
               onChanged: (value) {
-                print("value: $value");
+                controller.itemName = (value);
               },
             ),
             SizedBox(
               height: 15,
             ),
-            QTextField(
+            QNumberField(
               label: "Amount",
               validator: Validator.required,
               hint: "Type amount of expense",
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.amount = (value) as num;
+              },
             ),
             SizedBox(
               height: 15,
@@ -105,31 +93,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
               label: "Photo",
               validator: Validator.required,
               value: null,
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.photo = (value);
+              },
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   children: [
-            //     Container(
-            //       height: 120,
-            //       width: 100,
-            //       decoration:
-            //           BoxDecoration(border: Border.all(color: Colors.grey)),
-            //       child: ElevatedButton(
-            //         style: ElevatedButton.styleFrom(
-            //           backgroundColor: Colors.white,
-            //         ),
-            //         onPressed: () async {},
-            //         child: Text(
-            //           "Upload Image (Max 5 MB)",
-            //           style: TextStyle(
-            //             color: Colors.grey,
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             SizedBox(
               height: 15,
             ),
@@ -139,11 +106,13 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF9B51E0),
                 ),
-                onPressed: () {},
+                onPressed: () => controller.DoAddExpense(),
                 child: const Text("Request Expense"),
               ),
             ),
           ],
         ));
   }
+
+  State<AddExpensePageView> createState() => AddExpenseController();
 }

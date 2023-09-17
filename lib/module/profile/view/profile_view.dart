@@ -1,17 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
-import 'package:hyper_ui/module/akun/item/akunDataModel.dart';
-
-import '../controller/profile_controller.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
 
   Widget build(context, ProfileController controller) {
     controller.view = this;
-    final akunData = akunDataModel.akunData;
-    final name = akunData[0]["id"]["nama"];
-    final email = akunData[0]["id"]["email"];
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
@@ -51,7 +46,8 @@ class ProfileView extends StatefulWidget {
                     backgroundColor: Colors.white,
                     radius: 30.0,
                     backgroundImage: AssetImage(
-                      "assets/aset/akun.jpg",
+                      FirebaseAuth.instance.currentUser!.photoURL ??
+                          "assets/aset/logo.png",
                     ),
                   ),
                   const SizedBox(
@@ -63,7 +59,8 @@ class ProfileView extends StatefulWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "$name",
+                          FirebaseAuth.instance.currentUser!.displayName ??
+                              "Jacob",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 17.0,
@@ -74,7 +71,7 @@ class ProfileView extends StatefulWidget {
                           height: 5,
                         ),
                         Text(
-                          "$email",
+                          FirebaseAuth.instance.currentUser!.email ?? "none",
                           style: TextStyle(
                             fontSize: 12.0,
                             color: Colors.white,

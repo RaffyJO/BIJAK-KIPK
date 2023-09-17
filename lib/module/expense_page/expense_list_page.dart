@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_ui/module/expense_page/add_expense_page.dart';
-import 'package:hyper_ui/module/expense_page/expense_detail_page.dart';
-import 'package:hyper_ui/module/expense_page/object/expense_item.dart';
+import 'package:hyper_ui/module/add_expense/view/add_expense_view.dart';
+import 'package:hyper_ui/module/expense_list/view/expense_list_view.dart';
 
 class ExpenseListPage extends StatefulWidget {
   const ExpenseListPage({super.key});
@@ -43,21 +42,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                 ),
               ),
               searchBox(),
-              Expanded(
-                  child: ListView(
-                children: [
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                    ExpenseItem(),
-                ],
-              )),
+              Expanded(child: ExpenseListView()),
             ],
           )),
           Padding(
@@ -77,7 +62,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                       onPressed: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(
-                          builder: (context) => AddExpensePage(),
+                          builder: (context) => AddExpensePageView(),
                         ))
                             .then((value) {
                           setState(() {});
@@ -85,8 +70,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF9B51E0),
-          
-
 
                         // minimumSize: const Size(120, 60),
                         elevation: 10,
@@ -106,7 +89,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
     );
   }
 
-  
   Widget searchBox() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
