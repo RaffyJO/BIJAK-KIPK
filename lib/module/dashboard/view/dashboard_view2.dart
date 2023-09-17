@@ -1,8 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
 
-class DashboardView extends StatefulWidget {
-  DashboardView({Key? key}) : super(key: key);
+class DashboardView2 extends StatefulWidget {
+  DashboardView2({Key? key}) : super(key: key);
+  Future<num> getTotalExpenseForCurrentUserWithCategory(String category) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      String currentUserId = currentUser.uid;
+
+      QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
+          .collection("expense")
+          .where("user.uid", isEqualTo: currentUserId)
+          .where("category", isEqualTo: category)
+          .get();
+
+      num totalExpense = 0;
+
+      for (QueryDocumentSnapshot document in expenseSnapshot.docs) {
+        num amount = document["amount"] ?? 0;
+        totalExpense += amount;
+      }
+
+      return totalExpense;
+    } else {
+      // Handle kasus jika pengguna belum masuk atau tidak ada pengguna saat ini
+      return 0;
+    }
+  }
 
   Widget build(context, DashboardController controller) {
     final now = DateTime.now();
@@ -10,7 +37,7 @@ class DashboardView extends StatefulWidget {
     final monthName = monthFormat.format(now);
     String monthnow = monthName;
     final chartData = ChartDataModel.chartData;
-    // controller.view = this;
+    controller.view = this;
     ScrollController _scrollController = ScrollController();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -55,6 +82,24 @@ class DashboardView extends StatefulWidget {
                           ),
                           child: Column(
                             children: [
+                              FutureBuilder<num>(
+                                future:
+                                    getTotalExpenseForCurrentUserWithCategory(
+                                        "primer"),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator(); // Tampilkan loading indicator jika data masih dimuat
+                                  } else if (snapshot.hasError) {
+                                    return Text("Error: ${snapshot.error}");
+                                  } else {
+                                    num totalExpense = snapshot.data ?? 0;
+
+                                    return Text(
+                                        "Total Expense (primer): \$${totalExpense.toStringAsFixed(3)}");
+                                  }
+                                },
+                              ),
                               SizedBox(
                                 height: 17,
                               ),
@@ -296,5 +341,5 @@ class DashboardView extends StatefulWidget {
   }
 
   @override
-  DashboardController createState() => DashboardController();
+  State<DashboardView2> createState() => DashboardController();
 }

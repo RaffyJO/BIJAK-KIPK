@@ -1,6 +1,7 @@
+// ignore_for_file: unnecessary_import
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hyper_ui/core.dart';
 
 class ReportDetailPage extends StatefulWidget {
   const ReportDetailPage({super.key});

@@ -1,24 +1,12 @@
-import 'package:hyper_ui/core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'package:hyper_ui/module/expense_page/add_expense_page.dart';
-import 'package:hyper_ui/module/expense_page/expense_detail_page.dart';
-import 'package:hyper_ui/module/expense_page/expense_list_page.dart';
+import 'package:hyper_ui/core.dart';
 import 'package:hyper_ui/module/login_form/view/login_form_view.dart';
-import 'package:hyper_ui/module/transaction_page/add_report_page.dart';
-import 'package:hyper_ui/module/transaction_page/report_page.dart';
-import 'package:hyper_ui/module/transaction_page/report_detail_page.dart';
-
-import 'package:hyper_ui/module/login_form/view/login_form_view.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runMainApp();
-}
-
-runMainApp() async {
-  return runApp(const MainApp());
+  await Firebase.initializeApp();
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -32,11 +20,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // theme: getDefaultTheme()
 
-
-
       home: LoginFormView(),
-
-
     );
   }
 }
