@@ -13,7 +13,6 @@ class ReportPage extends StatefulWidget {
 class _ReportPageState extends State<ReportPage> {
   final reportsList = Report.reportList();
   List<Report> _foundReport = [];
-  final _reportController = TextEditingController();
   final reportList = Report.reportList();
 
   @override

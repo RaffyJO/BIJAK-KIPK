@@ -1,7 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
-
-import '../controller/profile_controller.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -47,19 +46,21 @@ class ProfileView extends StatefulWidget {
                     backgroundColor: Colors.white,
                     radius: 30.0,
                     backgroundImage: AssetImage(
-                      "assets/aset/akun.jpg",
+                      FirebaseAuth.instance.currentUser!.photoURL ??
+                          "assets/aset/logo.png",
                     ),
                   ),
                   const SizedBox(
                     width: 8.0,
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Jhonny Rogers",
+                          FirebaseAuth.instance.currentUser!.displayName ??
+                              "Jacob",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 17.0,
@@ -70,7 +71,7 @@ class ProfileView extends StatefulWidget {
                           height: 5,
                         ),
                         Text(
-                          "Jhonny.rogers@gmail.com",
+                          FirebaseAuth.instance.currentUser!.email ?? "none",
                           style: TextStyle(
                             fontSize: 12.0,
                             color: Colors.white,
@@ -83,79 +84,6 @@ class ProfileView extends StatefulWidget {
                     width: 8.0,
                   ),
                 ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                height: 300,
-                child: Builder(
-                  builder: (context) {
-                    List items = [
-                      {
-                        "label": "Addresses",
-                        "icon": Icons.pin_drop,
-                        "on_tap": () {}
-                      },
-                      {
-                        "label": "Referral code",
-                        "icon": Icons.code,
-                        "on_tap": () {}
-                      },
-                      {
-                        "label": "Privacy Policy",
-                        "icon": Icons.info,
-                        "on_tap": () {}
-                      },
-                      {"label": "TOS", "icon": Icons.warning, "on_tap": () {}}
-                    ];
-
-                    return InkWell(
-                      onTap: () {},
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 12.0,
-                        ),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20.0),
-                          ),
-                        ),
-                        child: ListView.builder(
-                          itemCount: items.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            var item = items[index];
-                            return InkWell(
-                              onTap: () {
-                                if (item["on_tap"] != null) {
-                                  item["on_tap"]!();
-                                }
-                              },
-                              child: SizedBox(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: ListTile(
-                                    leading: Icon(
-                                      item["icon"],
-                                      size: 30.0,
-                                    ),
-                                    title: Text(item["label"]),
-                                    trailing: const Icon(
-                                      Icons.chevron_right,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ),
               ),
             ),
           ],
