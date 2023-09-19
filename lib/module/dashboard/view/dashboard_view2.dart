@@ -96,7 +96,7 @@ class DashboardView2 extends StatefulWidget {
                                     num totalExpense = snapshot.data ?? 0;
 
                                     return Text(
-                                        "Total Expense (primer): \$${totalExpense.toStringAsFixed(3)}");
+                                        "Total Expense di bulan $monthnow : \$${totalExpense.toStringAsFixed(3)}");
                                   }
                                 },
                               ),

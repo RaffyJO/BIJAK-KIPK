@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -31,7 +33,10 @@ class LoginFormController extends State<LoginFormView> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => FloatMainNavigationView()),
+        MaterialPageRoute(
+            builder: (context) => FloatMainNavigationView(
+                  initialSelectedIndex: 0,
+                )),
       );
     } on Exception catch (_) {
       print(_);
@@ -65,7 +70,10 @@ class LoginFormController extends State<LoginFormView> {
       print("Login berhasil");
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => FloatMainNavigationView()),
+        MaterialPageRoute(
+            builder: (context) => FloatMainNavigationView(
+                  initialSelectedIndex: 0,
+                )),
       );
     } catch (_) {
       print(_);

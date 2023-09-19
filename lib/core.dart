@@ -14,6 +14,7 @@ export 'package:hyper_ui/module/button_navigator/coba.dart';
 export 'package:hyper_ui/module/dashboard/controller/dashboard_controller.dart';
 export 'package:hyper_ui/module/dashboard/view/chart_data_model.dart';
 export 'package:hyper_ui/module/dashboard/view/dashboard_view.dart';
+export 'package:hyper_ui/module/dashboard/view/dashboard_view2.dart';
 export 'package:hyper_ui/module/debug/controller/debug_controller.dart';
 export 'package:hyper_ui/module/debug/view/debug_view.dart';
 export 'package:hyper_ui/module/expense_list/controller/expense_list_controller.dart';

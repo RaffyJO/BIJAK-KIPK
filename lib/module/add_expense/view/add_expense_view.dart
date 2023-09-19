@@ -106,7 +106,7 @@ class AddExpensePageView extends StatefulWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF9B51E0),
                 ),
-                onPressed: () => controller.DoAddExpense(),
+                onPressed: () => controller.ConfirmAdd(),
                 child: const Text("Request Expense"),
               ),
             ),

@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCwHq89z_IBPNemNNhZZkiwZxq7gMP-t3E',
-    appId: '1:366679648636:android:2758b65a1bed68df635cf9',
+    appId: '1:366679648636:android:dedc6581890e961a635cf9',
     messagingSenderId: '366679648636',
     projectId: 'bijak-kipk',
     storageBucket: 'bijak-kipk.appspot.com',
@@ -70,6 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '366679648636',
     projectId: 'bijak-kipk',
     storageBucket: 'bijak-kipk.appspot.com',
+    androidClientId:
+        '366679648636-9bpffooa4u8hf1gitq6orbul135ldhlt.apps.googleusercontent.com',
     iosClientId:
         '366679648636-v8su8ktgqfs9haoad9ke4s34i44giksd.apps.googleusercontent.com',
     iosBundleId: 'com.example.hyperSnippet',
