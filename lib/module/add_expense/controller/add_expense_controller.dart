@@ -67,7 +67,7 @@ class AddExpenseController extends State<AddExpensePageView> {
       await FirebaseFirestore.instance.collection("expense").add({
         "name": nama,
         "category": category,
-        "date": Timestamp.now(),
+        "datebaru": date,
         "itemName": itemName,
         "amount": amount,
         "photo": photo,
@@ -91,7 +91,7 @@ class AddExpenseController extends State<AddExpensePageView> {
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure you want to delete this item?'),
+                Text('Tambahkan Data'),
               ],
             ),
           ),

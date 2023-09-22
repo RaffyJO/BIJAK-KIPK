@@ -3,6 +3,7 @@ We believe, the class name must be unique.
 If there is a conflicting class name in this file,
 it means you have to rename it to something more unique.
 */
+export 'package:hyper_ui/akun_cek.dart';
 export 'package:hyper_ui/config.dart';
 export 'package:hyper_ui/core_package.dart';
 export 'package:hyper_ui/firebase_options.dart';
@@ -17,9 +18,10 @@ export 'package:hyper_ui/module/dashboard/view/dashboard_view.dart';
 export 'package:hyper_ui/module/dashboard/view/dashboard_view2.dart';
 export 'package:hyper_ui/module/debug/controller/debug_controller.dart';
 export 'package:hyper_ui/module/debug/view/debug_view.dart';
+export 'package:hyper_ui/module/expense_detail/controller/expense_detail_controller.dart';
+export 'package:hyper_ui/module/expense_detail/view/expense_detail_view.dart';
 export 'package:hyper_ui/module/expense_list/controller/expense_list_controller.dart';
 export 'package:hyper_ui/module/expense_list/view/expense_list_view.dart';
-export 'package:hyper_ui/module/expense_page/expense_detail_page.dart';
 export 'package:hyper_ui/module/expense_page/expense_list_page.dart';
 export 'package:hyper_ui/module/expense_page/object/expense_item.dart';
 export 'package:hyper_ui/module/favorite/controller/favorite_controller.dart';
