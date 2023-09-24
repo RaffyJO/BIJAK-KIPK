@@ -1,6 +1,6 @@
 {
     "modules": [
-        "char_view"
+        "expense_detail"
     ],
     "module_directory_name": "module",
     "experimental_mode": false,

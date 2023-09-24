@@ -19,7 +19,9 @@ class ProfileView extends StatefulWidget {
         title: const Text("Profile"),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              controller.Dologout();
+            },
             icon: const Icon(
               Icons.logout,
               size: 24.0,

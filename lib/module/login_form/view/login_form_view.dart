@@ -10,7 +10,6 @@ class LoginFormView extends StatefulWidget {
         appBar: AppBar(
           backgroundColor: Color(0xFF9B51E0),
           title: const Text("LogIn Form"),
-          actions: const [],
         ),
         body: Center(
           child: ListView(

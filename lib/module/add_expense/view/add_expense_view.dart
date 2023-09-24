@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
+import 'package:intl/intl.dart';
 
 class AddExpensePageView extends StatefulWidget {
   const AddExpensePageView({Key? key}) : super(key: key);
@@ -75,7 +76,24 @@ class AddExpensePageView extends StatefulWidget {
               validator: Validator.required,
               hint: "Type amount of expense",
               onChanged: (value) {
-                controller.amount = num.tryParse(value) as num;
+                num? parsedValue = num.tryParse(value);
+                if (parsedValue != null) {
+                  controller.amount = parsedValue;
+                } else {
+                  print("Error: Nilai tidak valid");
+                }
+              },
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            QDatePicker(
+              label: "Tanggal ",
+              validator: Validator.required,
+              onChanged: (value) {
+                String formattedDate = DateFormat('yyyy-MM-dd').format(value);
+                controller.date = formattedDate;
+                print("formattedDate: $formattedDate");
               },
             ),
             SizedBox(
@@ -106,7 +124,7 @@ class AddExpensePageView extends StatefulWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF9B51E0),
                 ),
-                onPressed: () => controller.DoAddExpense(),
+                onPressed: () => controller.ConfirmAdd(),
                 child: const Text("Request Expense"),
               ),
             ),

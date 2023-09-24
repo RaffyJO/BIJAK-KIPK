@@ -19,68 +19,24 @@ class ExpenseListView extends StatefulWidget {
 
       return expenseSnapshot.docs;
     } else {
-      // Handle kasus jika pengguna belum masuk atau tidak ada pengguna saat ini
       return [];
     }
   }
 
   Widget build(context, ExpenseListController controller) {
     controller.view = this;
-
     return Scaffold(
       body: Stack(
         children: [
-          // StreamBuilder<QuerySnapshot>(
-          //   stream:
-          //       FirebaseFirestore.instance.collection("expense").snapshots(),
-          //   builder: (context, snapshot) {
-          //     if (snapshot.hasError) return const Text("Error");
-          //     if (snapshot.data == null) return Container();
-          //     if (snapshot.data!.docs.isEmpty) {
-          //       return const Text("No Data");
-          //     }
-          //     final data = snapshot.data!;
-          //     return ListView.builder(
-          //       itemCount: data.docs.length,
-          //       padding: EdgeInsets.zero,
-          //       clipBehavior: Clip.none,
-          //       itemBuilder: (context, index) {
-          //         Map<String, dynamic> item =
-          //             (data.docs[index].data() as Map<String, dynamic>);
-          //         item["id"] = data.docs[index].id;
-          //         var createAt = item["date"];
-          //         var dates = (createAt as Timestamp).toDate();
-          //         return Card(
-          //           child: ListTile(
-          //             title: Text(item["name"]),
-          //             subtitle: Text("$dates"),
-          //             trailing: Column(
-          //               children: [
-          //                 Text(
-          //                   item["category"],
-          //                   style: TextStyle(
-          //                     fontSize: 10.0,
-          //                   ),
-          //                 ),
-          //                 Text(
-          //                   "amount",
-          //                   style: TextStyle(
-          //                     fontSize: 10.0,
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
           FutureBuilder<List<DocumentSnapshot>>(
             future: getExpenseDataByCurrentUser(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return Container(
+                  color: Colors.white,
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(),
+                );
               } else if (snapshot.hasError) {
                 return Text("Error: ${snapshot.error}");
               } else {
@@ -90,8 +46,8 @@ class ExpenseListView extends StatefulWidget {
                   itemCount: expenseDocuments.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot document = expenseDocuments[index];
-                    var createAt = document["date"];
-                    var dates = (createAt as Timestamp).toDate();
+
+                    String date = document["datebaru"];
                     String name = document["name"];
                     String category = document["category"];
                     num amount = document["amount"];
@@ -102,7 +58,9 @@ class ExpenseListView extends StatefulWidget {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ExpenseDetailPage()),
+                            builder: (context) => ExpenseDetailPage(
+                                  documentId: document.id,
+                                )),
                       ),
                       child: Card(
                         child: ListTile(
@@ -113,7 +71,7 @@ class ExpenseListView extends StatefulWidget {
                             ),
                           ),
                           title: Text(name),
-                          subtitle: Text("$dates"),
+                          subtitle: Text(date),
                           trailing: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Column(
@@ -142,7 +100,7 @@ class ExpenseListView extends StatefulWidget {
                 );
               }
             },
-          )
+          ),
         ],
       ),
     );
