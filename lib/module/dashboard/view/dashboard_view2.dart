@@ -22,14 +22,13 @@ class DashboardView2 extends StatefulWidget {
           .where("category", isEqualTo: category)
           .get();
 
-      double totalExpense = 0.0; // Menggunakan tipe double untuk totalExpense
+      double totalExpense = 0.0;
 
       for (QueryDocumentSnapshot document in expenseSnapshot.docs) {
         dynamic amount = document["amount"];
         num numericAmount =
             amount is String ? num.tryParse(amount) ?? 0 : amount ?? 0;
-        totalExpense +=
-            numericAmount; // Menambahkan numericAmount, bukan amount
+        totalExpense += numericAmount;
       }
 
       return totalExpense;

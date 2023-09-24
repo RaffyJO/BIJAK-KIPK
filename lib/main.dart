@@ -5,7 +5,6 @@ import 'package:hyper_ui/akun_cek.dart';
 import 'module/button_navigator/button_navigation_bar.dart';
 import 'module/login_form/view/login_form_view.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -23,6 +22,9 @@ class MainApp extends StatelessWidget {
         '/login': (context) => LoginFormView(),
         '/homeExpense': (context) => FloatMainNavigationView(
               initialSelectedIndex: 1,
+            ),
+        '/home': (context) => FloatMainNavigationView(
+              initialSelectedIndex: 0,
             ),
       },
       // navigatorKey: Get.navigatorKey,3
