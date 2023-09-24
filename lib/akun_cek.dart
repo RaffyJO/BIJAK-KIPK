@@ -16,17 +16,13 @@ class akunCek extends StatelessWidget {
           User? user = snapshot.data;
 
           if (user == null) {
-            // Pengguna belum masuk, arahkan ke layar masuk atau halaman autentikasi.
             return LoginFormView();
           } else {
-            // Pengguna sudah masuk, arahkan ke halaman utama aplikasi.
             return FloatMainNavigationView(
               initialSelectedIndex: 0,
             );
           }
         }
-
-        // Tampilkan indikator loading atau widget lain selama proses cek autentikasi.
         return CircularProgressIndicator();
       },
     );
