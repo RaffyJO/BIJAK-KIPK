@@ -3,15 +3,18 @@ import 'package:hyper_ui/core.dart';
 import 'package:hyper_ui/module/dashboard/view/dashboard_view2.dart';
 
 class FloatMainNavigationView extends StatefulWidget {
-  const FloatMainNavigationView({Key? key}) : super(key: key);
+  final int initialSelectedIndex; // Tambahkan parameter ini
+  const FloatMainNavigationView({Key? key, required this.initialSelectedIndex})
+      : super(key: key);
 
   @override
   State<FloatMainNavigationView> createState() =>
-      _FloatMainNavigationViewState();
+      _FloatMainNavigationViewState(initialSelectedIndex);
 }
 
 class _FloatMainNavigationViewState extends State<FloatMainNavigationView> {
-  int selectedIndex = 0;
+  int selectedIndex;
+  _FloatMainNavigationViewState(this.selectedIndex);
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

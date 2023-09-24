@@ -27,22 +27,102 @@ class AddExpenseController extends State<AddExpensePageView> {
   String photo = "";
 
   DoAddExpense() async {
-    await FirebaseFirestore.instance.collection("expense").add({
-      "name": nama,
-      "category": category,
-      "date": Timestamp.now(),
-      "itemName": itemName,
-      "amount": amount,
-      "photo": photo,
-      "user": {
-        "uid": FirebaseAuth.instance.currentUser!.uid,
-        "name": FirebaseAuth.instance.currentUser!.displayName,
-        "email": FirebaseAuth.instance.currentUser!.email
-      }
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => FloatMainNavigationView()),
+    if (nama.isEmpty || category.isEmpty || itemName.isEmpty || photo.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Kesalahan'),
+            content: Text('Harap lengkapi semua data yang diperlukan.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (amount == 10) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Kesalahan'),
+            content: Text('Harap masukkan jumlah yang valid.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      await FirebaseFirestore.instance.collection("expense").add({
+        "name": nama,
+        "category": category,
+        "datebaru": date,
+        "itemName": itemName,
+        "amount": amount,
+        "photo": photo,
+        "user": {
+          "uid": FirebaseAuth.instance.currentUser!.uid,
+          "name": FirebaseAuth.instance.currentUser!.displayName,
+          "email": FirebaseAuth.instance.currentUser!.email
+        }
+      });
+    }
+  }
+
+  ConfirmAdd() {
+    bool confirm = false;
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Tambahkan Data'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF9B51E0),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("No"),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              onPressed: () {
+                DoAddExpense();
+                Navigator.pushReplacementNamed(context, '/homeExpense');
+              },
+              child: const Text("Yes"),
+            ),
+          ],
+        );
+      },
     );
+  }
+
+  void goBack() {
+    // Go back to the previous page
+    Get.back();
   }
 }

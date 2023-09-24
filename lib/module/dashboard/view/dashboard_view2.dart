@@ -17,11 +17,14 @@ class DashboardView2 extends StatefulWidget {
           .where("category", isEqualTo: category)
           .get();
 
-      num totalExpense = 0;
+      double totalExpense = 0.0; // Menggunakan tipe double untuk totalExpense
 
       for (QueryDocumentSnapshot document in expenseSnapshot.docs) {
-        num amount = document["amount"] ?? 0;
-        totalExpense += amount;
+        dynamic amount = document["amount"];
+        num numericAmount =
+            amount is String ? num.tryParse(amount) ?? 0 : amount ?? 0;
+        totalExpense +=
+            numericAmount; // Menambahkan numericAmount, bukan amount
       }
 
       return totalExpense;
@@ -82,24 +85,6 @@ class DashboardView2 extends StatefulWidget {
                           ),
                           child: Column(
                             children: [
-                              FutureBuilder<num>(
-                                future:
-                                    getTotalExpenseForCurrentUserWithCategory(
-                                        "primer"),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator(); // Tampilkan loading indicator jika data masih dimuat
-                                  } else if (snapshot.hasError) {
-                                    return Text("Error: ${snapshot.error}");
-                                  } else {
-                                    num totalExpense = snapshot.data ?? 0;
-
-                                    return Text(
-                                        "Total Expense (primer): \$${totalExpense.toStringAsFixed(3)}");
-                                  }
-                                },
-                              ),
                               SizedBox(
                                 height: 17,
                               ),
