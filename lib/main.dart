@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Capek Ngoding',
+      title: 'Bijak KIPK',
       routes: {
         '/login': (context) => LoginFormView(),
         '/homeExpense': (context) => FloatMainNavigationView(
