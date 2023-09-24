@@ -75,7 +75,7 @@ class AddExpensePageView extends StatefulWidget {
               validator: Validator.required,
               hint: "Type amount of expense",
               onChanged: (value) {
-                controller.amount = (value) as num;
+                controller.amount = num.tryParse(value) as num;
               },
             ),
             SizedBox(

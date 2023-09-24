@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_ui/module/add_expense/view/add_expense_view.dart';
-import 'package:hyper_ui/module/expense_list/view/expense_list_view.dart';
+import 'package:hyper_ui/core.dart';
 
 class ExpenseListPage extends StatefulWidget {
   const ExpenseListPage({super.key});
