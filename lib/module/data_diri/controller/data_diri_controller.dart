@@ -32,7 +32,7 @@ class DataDiriController extends State<DataDiriView> {
       'kip_number': kip_number,
       'password': password,
       'university': university,
-      'major': kip_number,
+      'major': major,
       'email': FirebaseAuth.instance.currentUser!.email,
       'nama': FirebaseAuth.instance.currentUser!.displayName,
       'user': {'uid': FirebaseAuth.instance.currentUser!.uid}

@@ -51,7 +51,7 @@ class LoginFormView extends StatefulWidget {
                       obscure: true,
                       validator: Validator.required,
                       suffixIcon: Icons.remove_red_eye_outlined,
-                      // isObscured: ob,
+                      isObscured: false,
                       onChanged: (value) {
                         controller.password = value;
                       },
