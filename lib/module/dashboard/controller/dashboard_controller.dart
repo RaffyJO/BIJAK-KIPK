@@ -2,32 +2,47 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/module/dashboard/view/dashboard_view2.dart';
-
 import '../view/chart_data_model.dart';
 
 class DashboardController extends State<DashboardView2> {
   static late DashboardController instance;
   late DashboardView2 view;
-  List<Map<String, dynamic>> chartData = ChartDataModel.chartData;
-  int selectedIndex = -1;
-  get products => null;
+  late Future<Map<String, int>> _categoryTotals;
 
   @override
   void initState() {
-    instance = this;
     super.initState();
+    _categoryTotals = getTotalExpenseByCategory();
   }
 
-  int selectedChartIndex = 0;
+  Future<Map<String, int>> getTotalExpenseByCategory() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
 
-  void selectChart(int index) {
-    setState(() {
-      selectedChartIndex = index;
-    });
+    if (currentUser != null) {
+      String currentUserId = currentUser.uid;
+      Map<String, int> categoryTotals = {};
+
+      QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
+          .collection("expense")
+          .where("user.uid", isEqualTo: currentUserId)
+          .get();
+
+      expenseSnapshot.docs.forEach((doc) {
+        String category = doc['category'];
+        int expenseAmount = doc['amount'];
+
+        categoryTotals.update(
+          category,
+          (value) => value + expenseAmount,
+          ifAbsent: () => expenseAmount,
+        );
+      });
+
+      return categoryTotals;
+    } else {
+      return {};
+    }
   }
-
-  @override
-  void dispose() => super.dispose();
 
   @override
   Widget build(BuildContext context) => widget.build(context, this);

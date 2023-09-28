@@ -5,9 +5,10 @@ import 'package:hyper_ui/core.dart';
 import 'package:hyper_ui/module/dashboard/view/diagram.dart';
 
 class DashboardView2 extends StatefulWidget {
+
   final double totalAmount;
   DashboardView2({Key? key, this.totalAmount = 0.0}) : super(key: key);
-
+  
   Future<List<DocumentSnapshot>> getExpense() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
     final now = DateTime.now();
@@ -16,6 +17,7 @@ class DashboardView2 extends StatefulWidget {
     String monthnow = monthName;
     if (currentUser != null) {
       String currentUserId = currentUser.uid;
+
       List<String> categoriesToSum = [
         'primer',
         'sekunder',
@@ -31,8 +33,11 @@ class DashboardView2 extends StatefulWidget {
       return expenseSnapshot.docs;
     } else {
       return [];
+
     }
   }
+
+  late Future<Map<String, int>> _categoryTotals = getTotalExpenseByCategory();
 
   Widget build(context, DashboardController controller) {
     final now = DateTime.now();
@@ -51,6 +56,7 @@ class DashboardView2 extends StatefulWidget {
         title: const Text("Dashboard"),
         automaticallyImplyLeading: false,
       ),
+
       body: SingleChildScrollView(
           child: FutureBuilder<List<DocumentSnapshot>>(
         future: getExpense(),
@@ -149,10 +155,13 @@ class DashboardView2 extends StatefulWidget {
                             children: [
                               Text(
                                 "Pengeluaran di Bulan $monthName",
+
                                 style: TextStyle(
+                                  color: Colors.white,
                                   fontSize: 17.0,
                                 ),
                               ),
+
                             ]),
                       ),
                       SizedBox(
@@ -238,9 +247,125 @@ class DashboardView2 extends StatefulWidget {
           }
         },
       )),
+
     );
   }
 
   @override
   State<DashboardView2> createState() => DashboardController();
 }
+
+
+void openChart(BuildContext context, snapshot) {
+  final primer = snapshot.data?.keys
+      .firstWhere((key) => key == 'Primer', orElse: () => '');
+  final sekunder = snapshot.data?.keys
+      .firstWhere((key) => key == 'Sekunder', orElse: () => '');
+  final tersier = snapshot.data?.keys
+      .firstWhere((key) => key == 'Tersier', orElse: () => '');
+  final pendidikan = snapshot.data?.keys
+      .firstWhere((key) => key == 'Pendidikan', orElse: () => '');
+  final totPrimer = snapshot.data?[primer] ?? 0;
+  final totSekunder = snapshot.data?[sekunder] ?? 0;
+  final totTersier = snapshot.data?[tersier] ?? 0;
+  final totPendidikan = snapshot.data?[pendidikan] ?? 0;
+  final now = DateTime.now();
+  final monthFormat = DateFormat.MMMM();
+  final chartData = ChartDataModel.chartData;
+  final currentMonth = monthFormat.format(now);
+  String monthNow = currentMonth;
+  Map<String, dynamic>? monthData;
+  for (final data in chartData) {
+    if (data["month"] == "$monthNow") {
+      monthData = data;
+      break;
+    }
+  }
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(20),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(monthNow),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: DChartComboO(
+                        barLabelDecorator: BarLabelDecorator(
+                            barLabelPosition: BarLabelPosition.outside),
+                        barLabelValue: (group, ordinalData, index) {
+                          return 'Rp.${ordinalData.measure}';
+                        },
+                        outsideBarLabelStyle: (group, ordinalData, index) {
+                          return const LabelStyle(
+                            fontSize: 8,
+                          );
+                        },
+                        groupList: [
+                          OrdinalGroup(
+                              id: '1',
+                              chartType: ChartType.bar,
+                              data: [
+                                OrdinalData(
+                                    domain: 'Primer', measure: totPrimer),
+                                OrdinalData(
+                                    domain: 'Sekunder', measure: totSekunder),
+                                OrdinalData(
+                                    domain: 'Tersier', measure: totTersier),
+                                OrdinalData(
+                                    domain: 'Pendidikan',
+                                    measure: totPendidikan),
+                              ]),
+                        ]),
+                  ),
+                ),
+                SizedBox(width: 20),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: InkWell(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: 30,
+                          width: 80,
+                          color: Colors.red,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Close",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      });
+}
+
