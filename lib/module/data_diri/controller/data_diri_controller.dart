@@ -22,24 +22,49 @@ class DataDiriController extends State<DataDiriView> {
   Widget build(BuildContext context) => widget.build(context, this);
 
   String kip_number = "";
+  String nama = "";
   String major = "";
-  String password = "";
+  String photo = "";
   String confirm_password = "";
   String university = "";
 
   Future<void> saveDataDiri(User user) async {
-    await FirebaseFirestore.instance.collection("datadiri").add({
-      'kip_number': kip_number,
-      'password': password,
-      'university': university,
-      'major': major,
-      'email': FirebaseAuth.instance.currentUser!.email,
-      'nama': FirebaseAuth.instance.currentUser!.displayName,
-      'user': {'uid': FirebaseAuth.instance.currentUser!.uid}
-    }).then((_) {
-      print('Data diri disimpan');
-    }).catchError((error) {
-      print('Error saat menyimpan data diri: $error');
-    });
+    if (kip_number.isEmpty ||
+        university.isEmpty ||
+        photo.isEmpty ||
+        major.isEmpty ||
+        nama.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Kesalahan"),
+          content: Text("Harap lengkapi semua data yang diperlukan."),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Ok"),
+            ),
+          ],
+        ),
+      );
+    } else {
+      try {
+        await FirebaseFirestore.instance.collection("datadiri").add({
+          'kip_number': kip_number,
+          'university': university,
+          'photo': photo,
+          'major': major,
+          'email': FirebaseAuth.instance.currentUser!.email,
+          'nama': nama,
+          'user': {'uid': FirebaseAuth.instance.currentUser!.uid}
+        }).then((_) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }).catchError((error) {
+          print('Error saat menyimpan data diri: $error');
+        });
+      } catch (e) {}
+    }
   }
 }

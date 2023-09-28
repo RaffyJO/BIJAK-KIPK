@@ -1,6 +1,6 @@
 {
     "modules": [
-        "data_diri"
+        "expense_count"
     ],
     "module_directory_name": "module",
     "experimental_mode": false,

@@ -65,8 +65,10 @@ class _QNumberFieldState extends State<QNumberField> {
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelText: widget.label,
-          suffixIcon: const Icon(
+          labelStyle: TextStyle(color: Color(0xFF9B51E0)),
+          suffixIcon: Icon(
             Icons.numbers,
+            color: Color(0xFF9B51E0),
           ),
           helperText: widget.helper,
           hintText: widget.hint,

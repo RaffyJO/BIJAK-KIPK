@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hyper_ui/core.dart';
 
 class LoginFormController extends State<LoginFormView> {
@@ -21,8 +20,9 @@ class LoginFormController extends State<LoginFormView> {
 
   String email = "";
   String password = "";
+  String confirm_password = "";
 
-  DoEmailLogin() async {
+  Future<void> DoEmailLogin() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -32,49 +32,27 @@ class LoginFormController extends State<LoginFormView> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => FloatMainNavigationView(
-                  initialSelectedIndex: 0,
-                )),
+          builder: (context) => FloatMainNavigationView(
+            initialSelectedIndex: 0,
+          ),
+        ),
       );
-    } on Exception catch (_) {
-      print(_);
-      showInfoDialog("Email atau password anda salah!");
-    }
-  }
-
-  DoGoogleLogin() async {
-    GoogleSignIn googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-      ],
-    );
-
-    try {
-      await googleSignIn.disconnect();
-    } catch (_) {}
-
-    try {
-      GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-      GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount!.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Gagal Login"),
+          content: Text("Email/Password anda salah!!"),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Ok"),
+            ),
+          ],
+        ),
       );
-      var userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      debugPrint("userCredential: $userCredential");
-
-      print("Login berhasil");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => FloatMainNavigationView(
-                  initialSelectedIndex: 0,
-                )),
-      );
-    } catch (_) {
-      print(_);
     }
   }
 }

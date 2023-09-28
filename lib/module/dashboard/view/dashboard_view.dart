@@ -10,7 +10,6 @@ class DashboardView extends StatefulWidget {
     final monthName = monthFormat.format(now);
     String monthnow = monthName;
     final chartData = ChartDataModel.chartData;
-    // controller.view = this;
     ScrollController _scrollController = ScrollController();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -33,7 +32,7 @@ class DashboardView extends StatefulWidget {
                     padding: const EdgeInsets.all(15.0),
                     child: Container(
                       child: Text(
-                        "Welcome Back " + controller.name,
+                        "Welcome Back ",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 17.0,

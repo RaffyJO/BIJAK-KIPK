@@ -34,6 +34,16 @@ class DataDiriView extends StatefulWidget {
               height: 15,
             ),
             QTextField(
+              label: "Nama",
+              validator: Validator.required,
+              onChanged: (value) {
+                controller.nama = (value);
+              },
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            QTextField(
               label: "University",
               validator: Validator.required,
               onChanged: (value) {
@@ -53,21 +63,20 @@ class DataDiriView extends StatefulWidget {
             SizedBox(
               height: 15,
             ),
-            QTextField(
-              label: "Password",
-              validator: Validator.required,
-              onChanged: (value) {
-                controller.password = (value);
-              },
+            Text(
+              "Upload Foto Anda",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
             ),
             SizedBox(
               height: 15,
             ),
-            QTextField(
-              label: "Confirm Password",
+            QImagePicker(
+              label: "Photo",
               validator: Validator.required,
+              value: null,
               onChanged: (value) {
-                controller.confirm_password = (value);
+                controller.photo = (value);
               },
             ),
             SizedBox(
@@ -79,7 +88,6 @@ class DataDiriView extends StatefulWidget {
                 if (user != null) {
                   controller.saveDataDiri(user);
                 }
-                Navigator.pushReplacementNamed(context, '/home');
               },
               child: Text('Simpan Data Diri'),
             ),

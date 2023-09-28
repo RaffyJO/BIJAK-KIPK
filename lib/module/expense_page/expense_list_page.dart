@@ -33,34 +33,20 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Color(0xFF9B51E0),
+        automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        title: const Text("Expense"),
+      ),
       body: Stack(
         children: [
           Container(
               child: Column(
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 100,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF9B51E0),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: const Text(
-                            "Expense",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                        )),
-                  ],
-                ),
-              ),
               searchBox(),
               Expanded(
                 child: FutureBuilder<List<DocumentSnapshot>>(
@@ -92,7 +78,10 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                         itemCount: expenseDocuments.length,
                         itemBuilder: (context, index) {
                           DocumentSnapshot document = expenseDocuments[index];
-                          String date = document["datebaru"];
+                          Timestamp? date = document["datebaru"];
+                          String formattedDate = date != null
+                              ? DateFormat('dd MMMM yyyy').format(date.toDate())
+                              : "";
                           String name = document["name"];
                           String category = document["category"];
                           String photo = document["photo"];
@@ -113,7 +102,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                                   backgroundImage: NetworkImage(photo),
                                 ),
                                 title: Text(name),
-                                subtitle: Text(date ?? "halo"),
+                                subtitle: Text(formattedDate),
                                 trailing: Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Column(

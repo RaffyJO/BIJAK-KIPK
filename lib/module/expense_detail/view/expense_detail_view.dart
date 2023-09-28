@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hyper_ui/core.dart';
 
 class ExpenseDetailPage extends StatelessWidget {
   final String documentId;
@@ -26,13 +27,16 @@ class ExpenseDetailPage extends StatelessWidget {
           return Text("Expense not found");
         } else {
           var data = snapshot.data?.data() as Map<String, dynamic>;
+
           var name = data['name'] ?? 'null';
           var category = data['category'] ?? 'null';
           var amount = data['amount'] ?? 'null';
           var itemName = data['itemName'] ?? 'null';
           var photo = data['photo'] ?? 'null';
           var date = data['datebaru'] ?? 'null';
-
+          String formattedDate = date != null
+              ? DateFormat('dd-MMMM-yyyy').format(date.toDate())
+              : "";
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
@@ -63,7 +67,7 @@ class ExpenseDetailPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$date',
+                          formattedDate,
                           style: TextStyle(color: Colors.grey),
                         ),
                         SizedBox(
@@ -129,7 +133,7 @@ class ExpenseDetailPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Created Date"),
-                            Text("$date"),
+                            Text(formattedDate),
                           ],
                         ),
                         SizedBox(
@@ -139,7 +143,7 @@ class ExpenseDetailPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Transaction Date"),
-                            Text('$date'),
+                            Text(formattedDate),
                           ],
                         ),
                         SizedBox(

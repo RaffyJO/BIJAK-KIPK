@@ -22,7 +22,8 @@ class AddExpenseController extends State<AddExpensePageView> {
   String nama = "";
   String category = "";
   String itemName = "";
-  String date = "";
+  DateTime? date;
+
   num? amount = 0;
   String photo = "";
 
@@ -45,13 +46,13 @@ class AddExpenseController extends State<AddExpensePageView> {
           );
         },
       );
-    } else if (amount == 10) {
+    } else if (amount == 0) {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text('Kesalahan'),
-            content: Text('Harap masukkan jumlah yang valid.'),
+            content: Text('Harap masukkan amount yang tepat'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -64,10 +65,12 @@ class AddExpenseController extends State<AddExpensePageView> {
         },
       );
     } else {
+      String month = DateFormat('MMMM').format(date!);
       await FirebaseFirestore.instance.collection("expense").add({
         "name": nama,
         "category": category,
         "datebaru": date,
+        "bulan": month,
         "itemName": itemName,
         "amount": amount,
         "photo": photo,
@@ -77,52 +80,42 @@ class AddExpenseController extends State<AddExpensePageView> {
           "email": FirebaseAuth.instance.currentUser!.email
         }
       });
+      showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm'),
+            content: const SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Tambahkan Data'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF9B51E0),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("No"),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/homeExpense');
+                },
+                child: Text("Yes"),
+              ),
+            ],
+          );
+        },
+      );
     }
-  }
-
-  ConfirmAdd() {
-    bool confirm = false;
-    showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Tambahkan Data'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF9B51E0),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("No"),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              onPressed: () {
-                DoAddExpense();
-                Navigator.pushReplacementNamed(context, '/homeExpense');
-              },
-              child: const Text("Yes"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void goBack() {
-    // Go back to the previous page
-    Get.back();
   }
 }
