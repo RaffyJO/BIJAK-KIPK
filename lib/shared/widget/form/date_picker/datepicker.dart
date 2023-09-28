@@ -1,5 +1,5 @@
-import 'package:hyper_ui/core.dart';
 import 'package:flutter/material.dart';
+import 'package:hyper_ui/core.dart';
 
 class QDatePicker extends StatefulWidget {
   final String label;
@@ -86,10 +86,11 @@ class _QDatePickerState extends State<QDatePicker> {
             decoration: InputDecoration(
               labelText: widget.label,
               labelStyle: const TextStyle(
-                color: Colors.blueGrey,
+                color: Color(0xFF9B51E0),
               ),
               suffixIcon: const Icon(
                 Icons.date_range,
+                color: Color(0xFF9B51E0),
               ),
               helperText: widget.helper,
               hintText: widget.hint,

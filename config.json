@@ -1,6 +1,6 @@
 {
     "modules": [
-        "expense_detail"
+        "expense_count"
     ],
     "module_directory_name": "module",
     "experimental_mode": false,

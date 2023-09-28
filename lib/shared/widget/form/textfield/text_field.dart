@@ -83,14 +83,13 @@ class _QTextFieldState extends State<QTextField> {
         decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xFF9B51E0))),
-          // border:
-          //      UnderlineInputBorder(borderSide: BorderSide(none)),
           border: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xFF9B51E0))),
           labelText: widget.label,
           labelStyle: TextStyle(color: Color(0xFF9B51E0)),
           suffixIcon: Icon(
             widget.suffixIcon ?? Icons.abc,
+            color: Color(0xFF9B51E0),
           ),
           helperText: widget.helper,
           hintText: widget.hint,

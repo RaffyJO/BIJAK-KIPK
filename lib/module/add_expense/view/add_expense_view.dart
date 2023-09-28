@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
-import 'package:intl/intl.dart';
 
 class AddExpensePageView extends StatefulWidget {
   const AddExpensePageView({Key? key}) : super(key: key);
@@ -91,9 +90,7 @@ class AddExpensePageView extends StatefulWidget {
               label: "Tanggal ",
               validator: Validator.required,
               onChanged: (value) {
-                String formattedDate = DateFormat('yyyy-MM-dd').format(value);
-                controller.date = formattedDate;
-                print("formattedDate: $formattedDate");
+                controller.date = (value);
               },
             ),
             SizedBox(
@@ -124,7 +121,7 @@ class AddExpensePageView extends StatefulWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF9B51E0),
                 ),
-                onPressed: () => controller.ConfirmAdd(),
+                onPressed: () => controller.DoAddExpense(),
                 child: const Text("Request Expense"),
               ),
             ),
