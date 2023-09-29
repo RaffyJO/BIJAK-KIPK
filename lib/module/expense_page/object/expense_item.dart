@@ -15,7 +15,7 @@ class _ExpenseItemState extends State<ExpenseItem> {
       onTap: () {
         Navigator.of(context)
             .push(MaterialPageRoute(
-          builder: (context) => ExpenseDetailPage(),
+          builder: (context) => ExpenseDetailPage(documentId: '',),
         ))
             .then((value) {
           setState(() {});

@@ -113,7 +113,10 @@ class ExpenseDetailPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Category"),
-                            Text('$category'),
+                            Text(
+                              category[0].toUpperCase() +
+                                  category.substring(1).toLowerCase(),
+                            ),
                           ],
                         ),
                         SizedBox(

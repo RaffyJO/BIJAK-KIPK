@@ -79,7 +79,8 @@ class ExpenseListView extends StatefulWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  category,
+                                  category[0].toUpperCase() +
+                                      category.substring(1).toLowerCase(),
                                   style: TextStyle(
                                     fontSize: 15.0,
                                   ),

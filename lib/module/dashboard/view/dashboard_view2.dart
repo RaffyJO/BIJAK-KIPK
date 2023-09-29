@@ -2,42 +2,162 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
-import 'package:hyper_ui/module/dashboard/view/diagram.dart';
 
 class DashboardView2 extends StatefulWidget {
-
   final double totalAmount;
   DashboardView2({Key? key, this.totalAmount = 0.0}) : super(key: key);
-  
-  Future<List<DocumentSnapshot>> getExpense() async {
+
+  Future<Map<String, int>> getTotalExpenseByCategory() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
-    final now = DateTime.now();
-    final monthFormat = DateFormat.MMMM();
-    final monthName = monthFormat.format(now);
-    String monthnow = monthName;
+
     if (currentUser != null) {
       String currentUserId = currentUser.uid;
+      Map<String, int> categoryTotals = {};
 
-      List<String> categoriesToSum = [
-        'primer',
-        'sekunder',
-        'tersier',
-        'pendidikan'
-      ];
+      DateTime now = DateTime.now();
+      String currentMonth = DateFormat('MMMM').format(now);
+
       QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
           .collection("expense")
           .where("user.uid", isEqualTo: currentUserId)
-          .where("bulan", isEqualTo: monthnow)
           .get();
 
-      return expenseSnapshot.docs;
-    } else {
-      return [];
+      expenseSnapshot.docs.forEach((doc) {
+        String category = doc['category'];
+        int expenseAmount = doc['amount'];
+        String month = doc['bulan'];
 
+        if (month == currentMonth) {
+          categoryTotals.update(
+            month = category,
+            (value) => value + expenseAmount,
+            ifAbsent: () => expenseAmount,
+          );
+        }
+      });
+
+      return categoryTotals;
+    } else {
+      return {};
     }
   }
 
   late Future<Map<String, int>> _categoryTotals = getTotalExpenseByCategory();
+  // Future<Object> getTotalExpenseByCategory() async {
+  //   User? currentUser = FirebaseAuth.instance.currentUser;
+
+  //   if (currentUser != null) {
+  //     String currentUserId = currentUser.uid;
+  //     List<Map<String, int>> categoryTotals = [];
+
+  //     QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
+  //         .collection("expense")
+  //         .where("user.uid", isEqualTo: currentUserId)
+  //         .get();
+
+  //     expenseSnapshot.docs.forEach((doc) {
+  //       String category = doc['category'];
+  //       int expenseAmount = doc['amount'];
+  //       String month = doc['bulan'];
+
+  //       updateCategoryTotal(String month, String category, int expenseAmount) {
+  //         // Mencari indeks untuk bulan yang sesuai dalam categoryTotals
+  //         int monthIndex = -1;
+  //         for (int i = 0; i < categoryTotals.length; i++) {
+  //           if (categoryTotals[i]["month"] == month) {
+  //             monthIndex = i;
+  //             break;
+  //           }
+  //         }
+
+  //         if (monthIndex != -1) {
+  //           // Jika bulan ditemukan dalam categoryTotals
+  //           if (categoryTotals[monthIndex].containsKey(category)) {
+  //             // Jika kategori ditemukan dalam map bulan tersebut
+  //             final existingAmount = categoryTotals[monthIndex][category];
+  //             categoryTotals[monthIndex][category] =
+  //                 (existingAmount ?? 0) + expenseAmount;
+  //           } else {
+  //             // Jika kategori tidak ditemukan dalam map bulan tersebut, tambahkan entri baru
+  //             categoryTotals[monthIndex][category] = expenseAmount;
+  //           }
+  //         } else {
+  //           // Jika bulan tidak ditemukan, tambahkan entri baru untuk bulan dan kategori
+  //           final newMonth = {
+  //             "month": month,
+  //             category: expenseAmount.toInt(),
+  //           };
+  //           categoryTotals.add(newMonth);
+  //         }
+  //       }
+
+  //       updateCategoryTotal(month, category, expenseAmount);
+  //     });
+
+  //     return categoryTotals;
+  //   } else {
+  //     return {};
+  //   }
+  // }
+  // Future<List<DocumentSnapshot>> getExpense() async {
+  //   User? currentUser = FirebaseAuth.instance.currentUser;
+  //   final now = DateTime.now();
+  //   final monthFormat = DateFormat.MMMM();
+  //   final monthName = monthFormat.format(now);
+  //   String monthnow = monthName;
+  //   if (currentUser != null) {
+  //     String currentUserId = currentUser.uid;
+  //     List<Map<String, dynamic>> chartData = [];
+
+  //     List<String> categoriesToSum = [
+  //       'primer',
+  //       'sekunder',
+  //       'tersier',
+  //       'pendidikan'
+  //     ];
+  //     QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
+  //         .collection("expense")
+  //         .where("user.uid", isEqualTo: currentUserId)
+  //         .where("bulan", isEqualTo: monthnow)
+  //         .get();
+
+  //     List<Map<String, dynamic>> data = [];
+  //     expenseSnapshot.docs.forEach((document) {
+  //       String month = document['bulan'];
+  //       num amount = document['amount'];
+  //       String category = document['category'];
+
+  //       int existingIndex = data.indexWhere((entry) => entry['month'] == month);
+
+  //       if (existingIndex != -1) {
+  //         if (category == "primer") {
+  //           data[existingIndex]['data']['primer'] += amount;
+  //         } else if (category == "sekunder") {
+  //           data[existingIndex]['data']['sekunder'] += amount;
+  //         } else if (category == "tersier") {
+  //           data[existingIndex]['data']['tersier'] += amount;
+  //         } else if (category == "pendidikan") {
+  //           data[existingIndex]['data']['pendidikan'] += amount;
+  //         }
+  //       } else {
+  //         Map<String, dynamic> newData = {
+  //           'month': month,
+  //           'data': {
+  //             'primer': category == "primer" ? amount : 0,
+  //             'sekunder': category == "sekunder" ? amount : 0,
+  //             'tersier': category == "tersier" ? amount : 0,
+  //             'pendidikan': category == "pendidikan" ? amount : 0,
+  //           },
+  //         };
+  //         data.add(newData);
+  //       }
+  //     });
+
+  //     return expenseSnapshot.docs;
+  //   } else {
+  //     return [];
+  //   }
+  // }
 
   Widget build(context, DashboardController controller) {
     final now = DateTime.now();
@@ -56,10 +176,9 @@ class DashboardView2 extends StatefulWidget {
         title: const Text("Dashboard"),
         automaticallyImplyLeading: false,
       ),
-
       body: SingleChildScrollView(
-          child: FutureBuilder<List<DocumentSnapshot>>(
-        future: getExpense(),
+          child: FutureBuilder<Map<String, int>>(
+        future: _categoryTotals,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
@@ -69,303 +188,584 @@ class DashboardView2 extends StatefulWidget {
             );
           } else if (snapshot.hasError) {
             return Text("Error: ${snapshot.error}");
-          } else {
-            List<DocumentSnapshot> expenseDocuments = snapshot.data ?? [];
-            num totalAmount = 0;
-
-            expenseDocuments.forEach((document) {
-              num amount = document["amount"];
-              totalAmount += amount;
-            });
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...expenseDocuments.map((document) {
-                  num amount = document["amount"];
-                  String bulan = document["bulan"];
-                  String category = document["category"];
-
-                  return Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 170,
-                        color: Color(0xFF9B51E0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Container(child: Text("Welcome back ")),
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 170,
+                    color: Color(0xFF9B51E0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Container(
+                            child: Text(
+                              "Welcome Back " + controller.name,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17.0,
+                              ),
                             ),
-                            Align(
-                              alignment: Alignment.center,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                               child: Container(
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-                                  child: Container(
-                                    height: 100,
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
+                                height: 100,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 17,
                                     ),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 17,
+                                    Text(
+                                      "Spending on $monthnow 2023",
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Expanded(
+                                        child: Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Rp.0",
+                                        style: TextStyle(
+                                          fontSize: 25.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        Text(
-                                          "Spending on $monthnow 2023",
-                                          style: TextStyle(
-                                            fontSize: 17.0,
-                                          ),
+                                      ),
+                                    )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  YourWidget(),
+                  Container(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Pengeluaran di Bulan $monthName",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                            ),
+                          ),
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: SizedBox(
+                        height: 76.0,
+                        child: ListView.builder(
+                          itemCount: 1,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            List<String> kebutuhan = [
+                              'Primer',
+                              'Sekunder',
+                              'Tersier',
+                              'Pendidikan'
+                            ];
+
+                            return Row(children: [
+                              Container(
+                                width: 160,
+                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                margin: EdgeInsets.only(right: 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        kebutuhan[0],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
                                         ),
-                                        SizedBox(
-                                          height: 10,
+                                      ),
+                                      SizedBox(
+                                        height: 9,
+                                      ),
+                                      Text(
+                                        "0",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 15.0,
                                         ),
-                                        Expanded(
-                                          child: Container(
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 160,
+                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                margin: EdgeInsets.only(right: 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        kebutuhan[1],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 9,
+                                      ),
+                                      Text(
+                                        "0",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 160,
+                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                margin: EdgeInsets.only(right: 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        kebutuhan[2],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 9,
+                                      ),
+                                      Text(
+                                        "0",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 160,
+                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                margin: EdgeInsets.only(right: 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        kebutuhan[3],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 9,
+                                      ),
+                                      Text(
+                                        "0",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ]);
+                          },
+                        )),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  SizedBox(
+                    height: 70,
+                  )
+                ],
+              ),
+            );
+          } else {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 170,
+                    color: Color(0xFF9B51E0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Container(
+                            child: Text(
+                              "Welcome Back " + controller.name,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                              child: Container(
+                                height: 100,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 17,
+                                    ),
+                                    Text(
+                                      "Spending on $monthnow 2023",
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Expanded(
+                                      child: ListView.builder(
+                                        itemCount: 1,
+                                        itemBuilder: (context, index) {
+                                          final category = snapshot.data?.keys
+                                              .elementAt(index);
+                                          final total =
+                                              snapshot.data?[category];
+                                          // Membuat variabel total
+                                          int overallTotal = 0;
+                                          // Mengakses data dari snapshot
+                                          final categoryTotals = snapshot.data;
+                                          // Melakukan penjumlahan
+                                          if (categoryTotals != null) {
+                                            categoryTotals
+                                                .forEach((category, total) {
+                                              overallTotal += total;
+                                            });
+                                          }
+                                          return Container(
                                             alignment: Alignment.center,
                                             child: Text(
-                                              "Rp.$totalAmount",
+                                              "Rp.$overallTotal",
                                               style: TextStyle(
                                                 fontSize: 25.0,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                      ],
+                                          );
+                                        },
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                      YourWidget(),
-                      Container(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Pengeluaran di Bulan $monthName",
+                      ],
+                    ),
+                  ),
+                  YourWidget(),
+                  Container(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Pengeluaran di Bulan $monthName",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                            ),
+                          ),
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: SizedBox(
+                        height: 76.0,
+                        child: ListView.builder(
+                          itemCount: 1,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            List<String> kebutuhan = [
+                              'Primer',
+                              'Sekunder',
+                              'Tersier',
+                              'Pendidikan'
+                            ];
+                            final primer = 'primer';
+                            final totPrimer = snapshot.data?[primer] ?? 0;
+                            final sekunder = 'sekunder';
+                            final totSekunder = snapshot.data?[sekunder] ?? 0;
+                            final tersier = 'tersier';
+                            final totTersier = snapshot.data?[tersier] ?? 0;
+                            final pendidikan = 'pendidikan';
+                            final totPendidikan =
+                                snapshot.data?[pendidikan] ?? 0;
 
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17.0,
+                            return Row(children: [
+                              Container(
+                                width: 160,
+                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                margin: EdgeInsets.only(right: 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        kebutuhan[0],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 9,
+                                      ),
+                                      Text(
+                                        totPrimer.toString(),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-
-                            ]),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: SizedBox(
-                            height: 76.0,
-                            child: ListView.builder(
-                              itemCount: 1,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                final data = chartData.firstWhere((element) =>
-                                    element["month"] == "$monthnow");
-                                List<String> kebutuhan = [
-                                  'Primer',
-                                  'Sekunder',
-                                  'Tersier',
-                                  'Pendidikan'
-                                ];
-
-                                return Row(
-                                  children: kebutuhan.map((jenis) {
-                                    return Container(
-                                      width: 160,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 12.0),
-                                      margin: EdgeInsets.only(right: 10.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[100],
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(16.0),
+                              Container(
+                                width: 160,
+                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                margin: EdgeInsets.only(right: 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        kebutuhan[1],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
                                         ),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              jenis,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15.0,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 9,
-                                            ),
-                                            Text(
-                                              "${data["data"][jenis.toLowerCase()]}",
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                                fontSize: 15.0,
-                                              ),
-                                            ),
-                                          ],
+                                      SizedBox(
+                                        height: 9,
+                                      ),
+                                      Text(
+                                        totSekunder.toString(),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 15.0,
                                         ),
                                       ),
-                                    );
-                                  }).toList(),
-                                );
-                              },
-                            )),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      ExpenseItem(),
-                      ExpenseItem(),
-                      ExpenseItem(),
-                      SizedBox(
-                        height: 70,
-                      )
-                    ],
-                  );
-                }),
-              ],
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 160,
+                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                margin: EdgeInsets.only(right: 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        kebutuhan[2],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 9,
+                                      ),
+                                      Text(
+                                        totTersier.toString(),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 160,
+                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                margin: EdgeInsets.only(right: 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        kebutuhan[3],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 9,
+                                      ),
+                                      Text(
+                                        totPendidikan.toString(),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ]);
+                          },
+                        )),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  ExpenseItem(),
+                  SizedBox(
+                    height: 70,
+                  )
+                ],
+              ),
             );
           }
         },
       )),
-
     );
   }
 
   @override
   State<DashboardView2> createState() => DashboardController();
 }
-
-
-void openChart(BuildContext context, snapshot) {
-  final primer = snapshot.data?.keys
-      .firstWhere((key) => key == 'Primer', orElse: () => '');
-  final sekunder = snapshot.data?.keys
-      .firstWhere((key) => key == 'Sekunder', orElse: () => '');
-  final tersier = snapshot.data?.keys
-      .firstWhere((key) => key == 'Tersier', orElse: () => '');
-  final pendidikan = snapshot.data?.keys
-      .firstWhere((key) => key == 'Pendidikan', orElse: () => '');
-  final totPrimer = snapshot.data?[primer] ?? 0;
-  final totSekunder = snapshot.data?[sekunder] ?? 0;
-  final totTersier = snapshot.data?[tersier] ?? 0;
-  final totPendidikan = snapshot.data?[pendidikan] ?? 0;
-  final now = DateTime.now();
-  final monthFormat = DateFormat.MMMM();
-  final chartData = ChartDataModel.chartData;
-  final currentMonth = monthFormat.format(now);
-  String monthNow = currentMonth;
-  Map<String, dynamic>? monthData;
-  for (final data in chartData) {
-    if (data["month"] == "$monthNow") {
-      monthData = data;
-      break;
-    }
-  }
-  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.all(20),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(monthNow),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: DChartComboO(
-                        barLabelDecorator: BarLabelDecorator(
-                            barLabelPosition: BarLabelPosition.outside),
-                        barLabelValue: (group, ordinalData, index) {
-                          return 'Rp.${ordinalData.measure}';
-                        },
-                        outsideBarLabelStyle: (group, ordinalData, index) {
-                          return const LabelStyle(
-                            fontSize: 8,
-                          );
-                        },
-                        groupList: [
-                          OrdinalGroup(
-                              id: '1',
-                              chartType: ChartType.bar,
-                              data: [
-                                OrdinalData(
-                                    domain: 'Primer', measure: totPrimer),
-                                OrdinalData(
-                                    domain: 'Sekunder', measure: totSekunder),
-                                OrdinalData(
-                                    domain: 'Tersier', measure: totTersier),
-                                OrdinalData(
-                                    domain: 'Pendidikan',
-                                    measure: totPendidikan),
-                              ]),
-                        ]),
-                  ),
-                ),
-                SizedBox(width: 20),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: InkWell(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          height: 30,
-                          width: 80,
-                          color: Colors.red,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Close",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      });
-}
-
