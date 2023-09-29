@@ -51,7 +51,7 @@ class SignUpFormController extends State<SignUpFormView> {
       );
     } on Exception catch (_) {
       print(_);
-      showInfoDialog("Masukkan password dengan benar");
+      showInfoDialog("Email dan password sudah pernah dibuat");
     }
   }
 }
