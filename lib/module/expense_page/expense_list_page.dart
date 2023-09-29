@@ -85,6 +85,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                           String name = document["name"];
                           String category = document["category"];
                           String photo = document["photo"];
+                          num amount = document["amount"];
 
                           return InkWell(
                             onTap: () => Navigator.push(
@@ -106,13 +107,21 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                                 trailing: Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
-                                        category,
+                                        category[0].toUpperCase() +
+                                            category.substring(1).toLowerCase(),
                                         style: TextStyle(
                                           fontSize: 15.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Rp." + amount.toString(),
+                                        style: TextStyle(
+                                          fontSize: 12.0,
                                         ),
                                       ),
                                     ],

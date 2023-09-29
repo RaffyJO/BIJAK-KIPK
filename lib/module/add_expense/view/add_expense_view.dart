@@ -53,7 +53,7 @@ class AddExpensePageView extends StatefulWidget {
               validator: Validator.required,
               hint: "Select category",
               onChanged: (value) {
-                controller.category = (value);
+                controller.category = (value.toLowerCase());
               },
             ),
             SizedBox(
