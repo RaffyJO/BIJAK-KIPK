@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hyper_ui/module/transaction_page/add_report_page.dart';
-import 'package:hyper_ui/module/transaction_page/object/report.dart';
-import 'package:hyper_ui/module/transaction_page/object/report_item.dart';
+import 'package:hyper_ui/core.dart';
 
 class ReportPage extends StatefulWidget {
   const ReportPage({super.key});
@@ -11,60 +11,140 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
-  final reportsList = Report.reportList();
-  List<Report> _foundReport = [];
-  final reportList = Report.reportList();
+  Future<List<DocumentSnapshot>> getReportDataByCurrentUser() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
 
-  @override
-  void initState() {
-    _foundReport = reportsList;
-    super.initState();
+    if (currentUser != null) {
+      String currentUserId = currentUser.uid;
+
+      QuerySnapshot reportSnapshot = await FirebaseFirestore.instance
+          .collection("report")
+          .where("user.uid", isEqualTo: currentUserId)
+          .get();
+
+      return reportSnapshot.docs;
+    } else {
+      return [];
+    }
   }
+
+  String searchText = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Color(0xFF9B51E0),
+        automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        title: const Text("Report"),
+      ),
       body: Stack(
         children: [
           Container(
               child: Column(
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 100,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF9B51E0),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: const Text(
-                            "Report",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                        )),
-                  ],
-                ),
-              ),
               searchBox(),
               Expanded(
-                  child: ListView(
-                children: [
-                  for (Report iReport in _foundReport.reversed)
-                    ReportItem(
-                      report: iReport,
-                      // onToDoChanged: _handleToDoChange,
-                      // onDeleteItem: _delatedToDoItem,
-                    ),
-                ],
-              ))
+                child: FutureBuilder<List<DocumentSnapshot>>(
+                  future: getReportDataByCurrentUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                        color: Colors.white,
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("Error: ${snapshot.error}");
+                    } else {
+                      List<DocumentSnapshot> reportDocuments =
+                          snapshot.data ?? [];
+
+                      // Filter data berdasarkan teks pencarian
+                      if (searchText.isNotEmpty) {
+                        reportDocuments = reportDocuments.where((document) {
+                          var name = document["reportName"] ?? '';
+                          return name
+                              .toLowerCase()
+                              .contains(searchText.toLowerCase());
+                        }).toList();
+                      }
+
+                      return ListView.builder(
+                        itemCount: reportDocuments.length,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot document = reportDocuments[index];
+                          Timestamp? date = document["date"];
+                          String formattedDate = date != null
+                              ? DateFormat('dd MMMM yyyy').format(date.toDate())
+                              : "";
+                          String reportName = document["reportName"];
+
+                          return InkWell(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReportDetailView(
+                                  documentId: document.id,
+                                ),
+                              ),
+                            ),
+                            child: Card(
+                              child: ListTile(
+                                title: Text(reportName),
+                                subtitle: Text(formattedDate),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.white,
+                                            elevation: 1),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditReportView(
+                                              documentId: document.id,
+                                            ),
+                                          ))
+                                              .then((value) {
+                                            setState(() {});
+                                          });
+                                        },
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: Colors.grey,
+                                        )),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.white,
+                                            elevation: 1),
+                                        onPressed: () {
+                                          openDialog(document);
+                                        },
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: Colors.grey,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+              )
             ],
           )),
           Padding(
@@ -84,7 +164,7 @@ class _ReportPageState extends State<ReportPage> {
                       onPressed: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(
-                          builder: (context) => AddReportPage(),
+                          builder: (context) => AddReportView(),
                         ))
                             .then((value) {
                           setState(() {});
@@ -111,34 +191,87 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
-  void _runFilter(String enteredKeyword) {
-    List<Report> results = [];
-    if (enteredKeyword.isEmpty) {
-      results = reportsList;
-    } else {
-      results = reportsList
-          .where((item) => item.reportName!
-              .toLowerCase()
-              .contains(enteredKeyword.toLowerCase()))
-          .toList();
-    }
+  void openDialog(DocumentSnapshot document) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 5),
+                    child: Text(
+                      document["reportName"],
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Text(
+                      "Are you sure to delete this report?",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          elevation: 10,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("Cancel"),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          elevation: 10,
+                        ),
+                        onPressed: () {
+                          deleteReport(document.id);
+                          Navigator.pushReplacementNamed(
+                              context, '/homeReport');
+                        },
+                        child: Text("Delete"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
-    setState(() {
-      _foundReport = results;
-    });
+  void deleteReport(String documentId) {
+    // Tambahkan logika penghapusan data berdasarkan documentId
+    FirebaseFirestore.instance.collection("report").doc(documentId).delete();
   }
 
   Widget searchBox() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.grey),
       ),
       child: TextField(
-        onChanged: ((value) => _runFilter(value)),
+        onChanged: (value) {
+          setState(() {
+            searchText = value;
+          });
+        },
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
             contentPadding: EdgeInsets.all(0),

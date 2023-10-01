@@ -2,18 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
 
-class ExpenseDetailPage extends StatelessWidget {
+class ReportDetailView extends StatelessWidget {
   final String documentId;
 
-  ExpenseDetailPage({required this.documentId});
+  ReportDetailView({required this.documentId});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance
-          .collection('expense')
-          .doc(documentId)
-          .get(),
+      future:
+          FirebaseFirestore.instance.collection('report').doc(documentId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
@@ -24,16 +22,18 @@ class ExpenseDetailPage extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text("Error: ${snapshot.error}");
         } else if (!snapshot.hasData || !snapshot.data!.exists) {
-          return Text("Expense not found");
+          return Text("Report not found");
         } else {
           var data = snapshot.data?.data() as Map<String, dynamic>;
 
+          var reportName = data['reportName'] ?? 'null';
           var name = data['name'] ?? 'null';
-          var category = data['category'] ?? 'null';
-          var amount = data['amount'] ?? 'null';
-          var itemName = data['itemName'] ?? 'null';
+          var university = data['university'] ?? 'null';
+          var major = data['major'] ?? 'null';
+          var year = data['year'] ?? 'null';
+          var description = data['description'] ?? '-';
           var photo = data['photo'] ?? 'null';
-          var date = data['datebaru'] ?? 'null';
+          var date = data['date'] ?? 'null';
           String formattedDate = date != null
               ? DateFormat('dd-MMMM-yyyy').format(date.toDate())
               : "";
@@ -49,7 +49,7 @@ class ExpenseDetailPage extends StatelessWidget {
                 },
               ),
               title: Text(
-                "Expense Details",
+                "Report Details",
                 style: TextStyle(color: Colors.black),
               ),
               backgroundColor: Colors.white,
@@ -74,7 +74,7 @@ class ExpenseDetailPage extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          '$name',
+                          reportName,
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.w600),
                         ),
@@ -86,7 +86,7 @@ class ExpenseDetailPage extends StatelessWidget {
                   height: 20,
                 ),
                 Text(
-                  "Expense Info",
+                  "Report Info",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w600),
                 ),
@@ -102,8 +102,8 @@ class ExpenseDetailPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Expense Name"),
-                            Text("$name"),
+                            Text("Reffering"),
+                            Text(name),
                           ],
                         ),
                         SizedBox(
@@ -112,11 +112,8 @@ class ExpenseDetailPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Category"),
-                            Text(
-                              category[0].toUpperCase() +
-                                  category.substring(1).toLowerCase(),
-                            ),
+                            Text("University"),
+                            Text(university),
                           ],
                         ),
                         SizedBox(
@@ -125,8 +122,8 @@ class ExpenseDetailPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Item Name"),
-                            Text("$itemName"),
+                            Text("Major"),
+                            Text(major),
                           ],
                         ),
                         SizedBox(
@@ -135,18 +132,8 @@ class ExpenseDetailPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Created Date"),
-                            Text(formattedDate),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Transaction Date"),
-                            Text(formattedDate),
+                            Text("Year of Study"),
+                            Text(year),
                           ],
                         ),
                         SizedBox(
@@ -156,7 +143,7 @@ class ExpenseDetailPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Amount"),
-                            Text('$amount'),
+                            Text("-"),
                           ],
                         ),
                         SizedBox(
@@ -167,6 +154,25 @@ class ExpenseDetailPage extends StatelessWidget {
                           children: [
                             Text("Reference ID"),
                             Text(documentId),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text("Description"),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              description,
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                              ),
+                            ),
                           ],
                         ),
                         SizedBox(

@@ -289,7 +289,7 @@ class ProfileView extends StatefulWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "KIP-K number",
+                                        "KIP-K Number",
                                         style: TextStyle(fontSize: 17),
                                       ),
                                       Text(

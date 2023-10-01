@@ -102,7 +102,9 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                                   backgroundColor: Colors.grey[200],
                                   backgroundImage: NetworkImage(photo),
                                 ),
-                                title: Text(name),
+                                title: Text(
+                                  name,
+                                ),
                                 subtitle: Text(formattedDate),
                                 trailing: Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -115,8 +117,8 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                                         category[0].toUpperCase() +
                                             category.substring(1).toLowerCase(),
                                         style: TextStyle(
-                                          fontSize: 15.0,
-                                        ),
+                                            fontSize: 15.0,
+                                            color: Color(0xFF9B51E0)),
                                       ),
                                       Text(
                                         "Rp." + amount.toString(),
@@ -207,7 +209,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
             size: 20,
           ),
           border: InputBorder.none,
-          hintText: 'Search report...',
+          hintText: 'Search expense...',
           hintStyle: TextStyle(
             color: Colors.grey,
           ),

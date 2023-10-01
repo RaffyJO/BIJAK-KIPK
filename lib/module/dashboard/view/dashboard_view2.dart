@@ -43,128 +43,12 @@ class DashboardView2 extends StatefulWidget {
   }
 
   late Future<Map<String, int>> _categoryTotals = getTotalExpenseByCategory();
-  // Future<Object> getTotalExpenseByCategory() async {
-  //   User? currentUser = FirebaseAuth.instance.currentUser;
-
-  //   if (currentUser != null) {
-  //     String currentUserId = currentUser.uid;
-  //     List<Map<String, int>> categoryTotals = [];
-
-  //     QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
-  //         .collection("expense")
-  //         .where("user.uid", isEqualTo: currentUserId)
-  //         .get();
-
-  //     expenseSnapshot.docs.forEach((doc) {
-  //       String category = doc['category'];
-  //       int expenseAmount = doc['amount'];
-  //       String month = doc['bulan'];
-
-  //       updateCategoryTotal(String month, String category, int expenseAmount) {
-  //         // Mencari indeks untuk bulan yang sesuai dalam categoryTotals
-  //         int monthIndex = -1;
-  //         for (int i = 0; i < categoryTotals.length; i++) {
-  //           if (categoryTotals[i]["month"] == month) {
-  //             monthIndex = i;
-  //             break;
-  //           }
-  //         }
-
-  //         if (monthIndex != -1) {
-  //           // Jika bulan ditemukan dalam categoryTotals
-  //           if (categoryTotals[monthIndex].containsKey(category)) {
-  //             // Jika kategori ditemukan dalam map bulan tersebut
-  //             final existingAmount = categoryTotals[monthIndex][category];
-  //             categoryTotals[monthIndex][category] =
-  //                 (existingAmount ?? 0) + expenseAmount;
-  //           } else {
-  //             // Jika kategori tidak ditemukan dalam map bulan tersebut, tambahkan entri baru
-  //             categoryTotals[monthIndex][category] = expenseAmount;
-  //           }
-  //         } else {
-  //           // Jika bulan tidak ditemukan, tambahkan entri baru untuk bulan dan kategori
-  //           final newMonth = {
-  //             "month": month,
-  //             category: expenseAmount.toInt(),
-  //           };
-  //           categoryTotals.add(newMonth);
-  //         }
-  //       }
-
-  //       updateCategoryTotal(month, category, expenseAmount);
-  //     });
-
-  //     return categoryTotals;
-  //   } else {
-  //     return {};
-  //   }
-  // }
-  // Future<List<DocumentSnapshot>> getExpense() async {
-  //   User? currentUser = FirebaseAuth.instance.currentUser;
-  //   final now = DateTime.now();
-  //   final monthFormat = DateFormat.MMMM();
-  //   final monthName = monthFormat.format(now);
-  //   String monthnow = monthName;
-  //   if (currentUser != null) {
-  //     String currentUserId = currentUser.uid;
-  //     List<Map<String, dynamic>> chartData = [];
-
-  //     List<String> categoriesToSum = [
-  //       'primer',
-  //       'sekunder',
-  //       'tersier',
-  //       'pendidikan'
-  //     ];
-  //     QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
-  //         .collection("expense")
-  //         .where("user.uid", isEqualTo: currentUserId)
-  //         .where("bulan", isEqualTo: monthnow)
-  //         .get();
-
-  //     List<Map<String, dynamic>> data = [];
-  //     expenseSnapshot.docs.forEach((document) {
-  //       String month = document['bulan'];
-  //       num amount = document['amount'];
-  //       String category = document['category'];
-
-  //       int existingIndex = data.indexWhere((entry) => entry['month'] == month);
-
-  //       if (existingIndex != -1) {
-  //         if (category == "primer") {
-  //           data[existingIndex]['data']['primer'] += amount;
-  //         } else if (category == "sekunder") {
-  //           data[existingIndex]['data']['sekunder'] += amount;
-  //         } else if (category == "tersier") {
-  //           data[existingIndex]['data']['tersier'] += amount;
-  //         } else if (category == "pendidikan") {
-  //           data[existingIndex]['data']['pendidikan'] += amount;
-  //         }
-  //       } else {
-  //         Map<String, dynamic> newData = {
-  //           'month': month,
-  //           'data': {
-  //             'primer': category == "primer" ? amount : 0,
-  //             'sekunder': category == "sekunder" ? amount : 0,
-  //             'tersier': category == "tersier" ? amount : 0,
-  //             'pendidikan': category == "pendidikan" ? amount : 0,
-  //           },
-  //         };
-  //         data.add(newData);
-  //       }
-  //     });
-
-  //     return expenseSnapshot.docs;
-  //   } else {
-  //     return [];
-  //   }
-  // }
 
   Widget build(context, DashboardController controller) {
     final now = DateTime.now();
     final monthFormat = DateFormat.MMMM();
     final monthName = monthFormat.format(now);
     String monthnow = monthName;
-    final chartData = ChartDataModel.chartData;
 
     controller.view = this;
     ScrollController _scrollController = ScrollController();
@@ -450,12 +334,6 @@ class DashboardView2 extends StatefulWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  ExpenseItem(),
-                  ExpenseItem(),
-                  ExpenseItem(),
-                  SizedBox(
-                    height: 70,
-                  )
                 ],
               ),
             );

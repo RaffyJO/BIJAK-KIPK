@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
 
-class AddExpenseController extends State<AddExpensePageView> {
-  static late AddExpenseController instance;
-  late AddExpensePageView view;
+class AddReportController extends State<AddReportView> {
+  static late AddReportController instance;
+  late AddReportView view;
 
   @override
   void initState() {
@@ -19,18 +19,22 @@ class AddExpenseController extends State<AddExpensePageView> {
   @override
   Widget build(BuildContext context) => widget.build(context, this);
 
-  String nama = "";
-  String category = "";
-  var categori = {1: 'primer', 2: 'sekunder', 3: 'tersier', 4: 'pendidikan'};
-  String itemName = "";
+  String reportName = "";
+  String name = "";
+  String university = "";
+  String major = "";
+  String year = "";
   DateTime? date;
-  num? amount = 0;
   String photo = "";
+  String description = "";
 
-  final List<String> options = ['Option 1', 'Option 2', 'Option 3'];
-
-  DoAddExpense() async {
-    if (nama.isEmpty || category.isEmpty || itemName.isEmpty) {
+  DoAddReport() async {
+    if (reportName.isEmpty ||
+        name.isEmpty ||
+        university.isEmpty ||
+        major.isEmpty ||
+        year.isEmpty ||
+        description.isEmpty) {
       showDialog(
         context: context,
         builder: (context) {
@@ -48,34 +52,16 @@ class AddExpenseController extends State<AddExpensePageView> {
           );
         },
       );
-    } else if (amount == 0) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Kesalahan'),
-            content: Text('Harap masukkan amount yang tepat'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
     } else {
-      String month = DateFormat('MMMM').format(date!);
-      await FirebaseFirestore.instance.collection("expense").add({
-        "name": nama,
-        "category": category,
-        "datebaru": date,
-        "bulan": month,
-        "itemName": itemName,
-        "amount": amount,
+      await FirebaseFirestore.instance.collection("report").add({
+        "reportName": reportName,
+        "name": name,
+        "university": university,
+        "major": major,
+        "year": year,
+        "date": DateTime.now(),
         "photo": photo,
+        "description": description,
         "user": {
           "uid": FirebaseAuth.instance.currentUser!.uid,
           "name": FirebaseAuth.instance.currentUser!.displayName,
@@ -110,7 +96,7 @@ class AddExpenseController extends State<AddExpensePageView> {
                   backgroundColor: Colors.red,
                 ),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/homeExpense');
+                  Navigator.pushReplacementNamed(context, '/homeReport');
                 },
                 child: Text("Yes"),
               ),
