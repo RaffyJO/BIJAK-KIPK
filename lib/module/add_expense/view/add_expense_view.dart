@@ -48,12 +48,38 @@ class AddExpensePageView extends StatefulWidget {
             SizedBox(
               height: 15,
             ),
+            // Column(
+            //   children: <Widget>[
+            //     FormBuilderRadioGroup(
+            //       decoration: InputDecoration(
+            //         labelText: "Category",
+            //         labelStyle: TextStyle(
+            //             color:
+            //                 Color(0xFF9B51E0) // Atur warna teks label di sini
+            //             ),
+            //       ),
+            //       name: 'radio_group',
+            //       initialValue: 0, // Nilai awal radio button grup
+            //       options: [
+            //         FormBuilderFieldOption(value: 1, child: Text('Primer')),
+            //         FormBuilderFieldOption(value: 2, child: Text('Sekunder')),
+            //         FormBuilderFieldOption(value: 3, child: Text('Tersier')),
+            //         FormBuilderFieldOption(value: 4, child: Text('Pendidikan')),
+            //         // Tambahkan opsi radio button sesuai kebutuhan Anda
+            //       ],
+            //       onChanged: (value) {
+            //         controller.category = int.tryParse(value);
+            //       },
+            //     ),
+            //     // Tambahkan RadioFormField sesuai kebutuhan Anda
+            //   ],
+            // ),
             QTextField(
               label: "Category",
               validator: Validator.required,
-              hint: "Select category",
+              hint: "Type category",
               onChanged: (value) {
-                controller.category = (value.toLowerCase());
+                controller.category = (value);
               },
             ),
             SizedBox(
@@ -87,7 +113,7 @@ class AddExpensePageView extends StatefulWidget {
               height: 15,
             ),
             QDatePicker(
-              label: "Tanggal ",
+              label: "Date",
               validator: Validator.required,
               onChanged: (value) {
                 controller.date = (value);

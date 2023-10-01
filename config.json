@@ -1,6 +1,6 @@
 {
     "modules": [
-        "expense_count"
+        "edit_report"
     ],
     "module_directory_name": "module",
     "experimental_mode": false,
