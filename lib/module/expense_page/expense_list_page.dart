@@ -20,6 +20,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
       QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
           .collection("expense")
           .where("user.uid", isEqualTo: currentUserId)
+          // .orderBy("date", descending: true)
           .get();
 
       return expenseSnapshot.docs;

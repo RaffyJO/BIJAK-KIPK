@@ -179,13 +179,64 @@ class ExpenseDetailPage extends StatelessWidget {
                         SizedBox(
                           height: 15,
                         ),
-                        Image.network('$photo',
-                            width: 200.0, height: 200.0, fit: BoxFit.cover,
-                            errorBuilder: (BuildContext context,
-                                Object exception, StackTrace? stackTrace) {
-                          print('Error: $exception');
-                          return Text('-- Image Not Found --');
-                        }),
+                        Image.network(
+                          '$photo',
+                          width: 200.0,
+                          height: 200.0,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Tambahkan logika penghapusan expense di sini
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Delete Expense"),
+                                    content: Text(
+                                        "Are you sure you want to delete this expense?"),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Cancel"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text("Delete"),
+                                        onPressed: () {
+                                          // Hapus expense berdasarkan documentId
+                                          FirebaseFirestore.instance
+                                              .collection('expense')
+                                              .doc(documentId)
+                                              .delete()
+                                              .then((_) {
+                                            Navigator.of(context).pop();
+                                            // Navigasi kembali ke layar sebelumnya
+                                            Navigator.of(context).pop();
+                                          }).catchError((error) {
+                                            print(
+                                                "Error deleting expense: $error");
+                                            // Tambahkan penanganan kesalahan jika diperlukan
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Text("Delete Expense"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Colors.red, // Warna latar belakang tombol
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
