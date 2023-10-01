@@ -179,12 +179,13 @@ class ExpenseDetailPage extends StatelessWidget {
                         SizedBox(
                           height: 15,
                         ),
-                        Image.network(
-                          '$photo',
-                          width: 200.0,
-                          height: 200.0,
-                          fit: BoxFit.cover,
-                        ),
+                        Image.network('$photo',
+                            width: 200.0, height: 200.0, fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace? stackTrace) {
+                          print('Error: $exception');
+                          return Text('-- Image Not Found --');
+                        }),
                         SizedBox(
                           height: 15,
                         ),
@@ -215,9 +216,9 @@ class ExpenseDetailPage extends StatelessWidget {
                                               .doc(documentId)
                                               .delete()
                                               .then((_) {
-                                            Navigator.of(context).pop();
                                             // Navigasi kembali ke layar sebelumnya
-                                            Navigator.of(context).pop();
+                                            Navigator.pushReplacementNamed(
+                                                context, '/homeExpense');
                                           }).catchError((error) {
                                             print(
                                                 "Error deleting expense: $error");
