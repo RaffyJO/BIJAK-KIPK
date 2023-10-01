@@ -160,6 +160,9 @@ class DashboardView2 extends StatefulWidget {
   // }
 
   Widget build(context, DashboardController controller) {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String? currentUserId = currentUser!.displayName;
+
     final now = DateTime.now();
     final monthFormat = DateFormat.MMMM();
     final monthName = monthFormat.format(now);
@@ -203,7 +206,8 @@ class DashboardView2 extends StatefulWidget {
                           padding: const EdgeInsets.all(15.0),
                           child: Container(
                             child: Text(
-                              "Welcome Back " + controller.name,
+                              "Welcome Back ",
+                              semanticsLabel: currentUserId,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17.0,

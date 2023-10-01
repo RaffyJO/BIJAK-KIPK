@@ -70,6 +70,7 @@ class AddExpenseController extends State<AddExpensePageView> {
         "name": nama,
         "category": category,
         "datebaru": date,
+        "date": Timestamp.now(),
         "bulan": month,
         "itemName": itemName,
         "amount": amount,
