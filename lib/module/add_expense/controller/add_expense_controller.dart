@@ -21,6 +21,7 @@ class AddExpenseController extends State<AddExpensePageView> {
 
   String nama = "";
   String category = "";
+  int? categor = 0;
   var categori = {1: 'primer', 2: 'sekunder', 3: 'tersier', 4: 'pendidikan'};
   String itemName = "";
   DateTime? date;

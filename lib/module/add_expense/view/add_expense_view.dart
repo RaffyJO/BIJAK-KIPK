@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hyper_ui/core.dart';
 
 class AddExpensePageView extends StatefulWidget {
@@ -68,7 +69,7 @@ class AddExpensePageView extends StatefulWidget {
             //         // Tambahkan opsi radio button sesuai kebutuhan Anda
             //       ],
             //       onChanged: (value) {
-            //         controller.category = int.tryParse(value);
+            //         controller.categor = (value);
             //       },
             //     ),
             //     // Tambahkan RadioFormField sesuai kebutuhan Anda

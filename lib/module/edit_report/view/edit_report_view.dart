@@ -128,19 +128,24 @@ class EditReportView extends StatefulWidget {
                     },
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 5,
                   ),
-                  QTextField(
-                    label: "Description",
+                  TextFormField(
+                    maxLines: 3,
                     validator: Validator.required,
-                    helper: description,
-                    hint: "Type description issue",
+                    decoration: InputDecoration(
+                        hintText: "Type description issue",
+                        labelText: "Description",
+                        labelStyle: TextStyle(color: Color(0xFF9B51E0)),
+                        isDense: true,
+                        alignLabelWithHint: true,
+                        helperText: description),
                     onChanged: (value) {
                       controller.description = (value);
                     },
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   Text(
                     "Upload Attachment",
