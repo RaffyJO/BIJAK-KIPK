@@ -28,6 +28,9 @@ class MainApp extends StatelessWidget {
         '/home': (context) => FloatMainNavigationView(
               initialSelectedIndex: 0,
             ),
+        '/homeReport': (context) => FloatMainNavigationView(
+              initialSelectedIndex: 2,
+            ),
       },
       debugShowCheckedModeBanner: false,
       home: akunCek(),

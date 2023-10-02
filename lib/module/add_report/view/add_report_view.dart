@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_ui/core.dart';
 
-import '../../../core.dart';
+class AddReportView extends StatefulWidget {
+  const AddReportView({Key? key}) : super(key: key);
 
-class AddReportPage extends StatefulWidget {
-  const AddReportPage({super.key});
+  Widget build(context, AddReportController controller) {
+    controller.view = this;
 
-  @override
-  State<AddReportPage> createState() => _AddReportPageState();
-}
-
-class _AddReportPageState extends State<AddReportPage> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -24,7 +19,7 @@ class _AddReportPageState extends State<AddReportPage> {
             },
           ),
           title: Text(
-            "Details",
+            "Add New Report",
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.white,
@@ -48,7 +43,9 @@ class _AddReportPageState extends State<AddReportPage> {
               label: "Report Name",
               validator: Validator.required,
               hint: "Type report name",
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.reportName = (value);
+              },
             ),
             SizedBox(
               height: 15,
@@ -57,7 +54,9 @@ class _AddReportPageState extends State<AddReportPage> {
               label: "Refering Name",
               validator: Validator.required,
               hint: "Type Refering name",
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.name = (value);
+              },
             ),
             SizedBox(
               height: 15,
@@ -66,7 +65,9 @@ class _AddReportPageState extends State<AddReportPage> {
               label: "University",
               validator: Validator.required,
               hint: "Select University",
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.university = (value);
+              },
             ),
             SizedBox(
               height: 15,
@@ -75,7 +76,9 @@ class _AddReportPageState extends State<AddReportPage> {
               label: "Major",
               validator: Validator.required,
               hint: "Type major name",
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.major = (value);
+              },
             ),
             SizedBox(
               height: 15,
@@ -84,19 +87,29 @@ class _AddReportPageState extends State<AddReportPage> {
               label: "Year of Study",
               validator: Validator.required,
               hint: "Type year of study",
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.year = (value);
+              },
             ),
             SizedBox(
-              height: 15,
+              height: 5,
             ),
-            QTextField(
-              label: "Description",
+            TextFormField(
+              maxLines: 3,
               validator: Validator.required,
-              hint: "Type description issue",
-              onChanged: (value) {},
+              decoration: InputDecoration(
+                hintText: "Type description",
+                labelText: "Description",
+                labelStyle: TextStyle(color: Color(0xFF9B51E0)),
+                isDense: true,
+                alignLabelWithHint: true,
+              ),
+              onChanged: (value) {
+                controller.description = (value);
+              },
             ),
             SizedBox(
-              height: 15,
+              height: 20,
             ),
             Text(
               "Upload Attachment",
@@ -110,7 +123,9 @@ class _AddReportPageState extends State<AddReportPage> {
               label: "Photo",
               validator: Validator.required,
               value: null,
-              onChanged: (value) {},
+              onChanged: (value) {
+                controller.photo = (value);
+              },
             ),
             SizedBox(
               height: 15,
@@ -121,11 +136,14 @@ class _AddReportPageState extends State<AddReportPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF9B51E0),
                 ),
-                onPressed: () {},
-                child: const Text("Request Report "),
+                onPressed: () => controller.DoAddReport(),
+                child: const Text("Request Report"),
               ),
             ),
           ],
         ));
   }
+
+  @override
+  State<AddReportView> createState() => AddReportController();
 }

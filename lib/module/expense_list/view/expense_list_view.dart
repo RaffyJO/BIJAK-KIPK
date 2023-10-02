@@ -15,6 +15,7 @@ class ExpenseListView extends StatefulWidget {
       QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
           .collection("expense")
           .where("user.uid", isEqualTo: currentUserId)
+          // .orderBy('datebaru', descending: true)
           .get();
 
       return expenseSnapshot.docs;

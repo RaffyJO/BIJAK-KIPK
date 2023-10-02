@@ -9,6 +9,7 @@ class QTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final bool obscure;
   final bool enabled;
+  final int? maxLines;
 
   final bool isObscured;
   final int? maxLength;
@@ -33,6 +34,7 @@ class QTextField extends StatefulWidget {
     this.enabled = true,
     this.prefixIcon,
     this.suffixIcon,
+    this.maxLines,
   }) : super(key: key);
 
   @override
