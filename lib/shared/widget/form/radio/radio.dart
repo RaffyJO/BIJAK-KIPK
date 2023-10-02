@@ -48,7 +48,7 @@ class _QRadioFieldState extends State<QRadioField> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(
-        bottom: 12.0,
+        bottom: 1.0,
       ),
       child: FormField(
         initialValue: false,
@@ -58,6 +58,7 @@ class _QRadioFieldState extends State<QRadioField> {
           return InputDecorator(
             decoration: InputDecoration(
               labelText: widget.label,
+              labelStyle: TextStyle(color: Color(0xFF9B51E0), fontSize: 20),
               errorText: field.errorText,
               border: InputBorder.none,
               helperText: widget.helper,
@@ -69,7 +70,10 @@ class _QRadioFieldState extends State<QRadioField> {
               itemBuilder: (context, index) {
                 var item = items[index];
                 return RadioListTile(
-                  title: Text("${item["label"]}"),
+                  activeColor: Color(0xFF9B51E0),
+                  title: Text(
+                    "${item["label"]}",
+                  ),
                   groupValue: true,
                   value: item["checked"] ?? false,
                   onChanged: (val) {

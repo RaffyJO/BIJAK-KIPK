@@ -175,7 +175,7 @@ class _YourWidgetState extends State<YourWidget> {
                                                   data["data"]["tersier"] +
                                                   data["data"]["pendidikan"]) *
                                               data["data"]["primer"] /
-                                              300000000,
+                                              3000000000,
                                           width: 20,
                                           color: Colors.blue,
                                         ),
@@ -185,7 +185,7 @@ class _YourWidgetState extends State<YourWidget> {
                                                   data["data"]["tersier"] +
                                                   data["data"]["pendidikan"]) *
                                               data["data"]["sekunder"] /
-                                              300000000,
+                                              3000000000,
                                           width: 20,
                                           color: Colors.yellow,
                                         ),
@@ -195,7 +195,7 @@ class _YourWidgetState extends State<YourWidget> {
                                                   data["data"]["tersier"] +
                                                   data["data"]["pendidikan"]) *
                                               data["data"]["tersier"] /
-                                              300000000,
+                                              3000000000,
                                           width: 20,
                                           color: Colors.red,
                                         ),
@@ -205,7 +205,7 @@ class _YourWidgetState extends State<YourWidget> {
                                                   data["data"]["tersier"] +
                                                   data["data"]["pendidikan"]) *
                                               data["data"]["pendidikan"] /
-                                              300000000,
+                                              3000000000,
                                           width: 20,
                                           color: Colors.green,
                                         ),

@@ -20,7 +20,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
       QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
           .collection("expense")
           .where("user.uid", isEqualTo: currentUserId)
-          // .orderBy("date", descending: true)
+          .orderBy("date", descending: true)
           .get();
 
       return expenseSnapshot.docs;
@@ -64,8 +64,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                     } else {
                       List<DocumentSnapshot> expenseDocuments =
                           snapshot.data ?? [];
-
-                      // Filter data berdasarkan teks pencarian
                       if (searchText.isNotEmpty) {
                         expenseDocuments = expenseDocuments.where((document) {
                           var name = document["name"] ?? '';

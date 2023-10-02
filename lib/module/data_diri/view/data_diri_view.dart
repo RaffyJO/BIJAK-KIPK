@@ -54,7 +54,7 @@ class DataDiriView extends StatefulWidget {
               height: 15,
             ),
             QTextField(
-              label: "major",
+              label: "Major",
               validator: Validator.required,
               onChanged: (value) {
                 controller.major = (value);
@@ -83,6 +83,8 @@ class DataDiriView extends StatefulWidget {
               height: 15,
             ),
             ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Color(0xFF9B51E0))),
               onPressed: () {
                 User? user = FirebaseAuth.instance.currentUser;
                 if (user != null) {

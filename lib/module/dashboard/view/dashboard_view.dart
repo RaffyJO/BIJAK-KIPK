@@ -282,7 +282,7 @@ class DashboardView extends StatefulWidget {
             SizedBox(
               height: 10,
             ),
-            Expanded(child: ExpenseListView()),
+            // Expanded(child: ExpenseListView()),
             ExpenseItem(),
             SizedBox(
               height: 70,

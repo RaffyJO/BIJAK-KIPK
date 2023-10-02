@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
@@ -19,6 +21,7 @@ class SignUpFormController extends State<SignUpFormView> {
   Widget build(BuildContext context) => widget.build(context, this);
   String email = "";
   String password = "";
+  bool isEmailVerified = false;
 
   DoSignUp() async {
     if (password.length < 6) {
@@ -41,17 +44,51 @@ class SignUpFormController extends State<SignUpFormView> {
     }
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DataDiriView()),
+
+      User? user = userCredential.user;
+      await user?.sendEmailVerification();
+
+      // Tampilkan popup loading
+      showDialog(
+        context: context,
+        barrierDismissible:
+            false, // Tidak bisa menutup popup dengan klik di luar
+        builder: (context) => AlertDialog(
+          title: Text("Verifikasi Email"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text("Sedang menunggu verifikasi email..."),
+            ],
+          ),
+        ),
       );
-    } on Exception catch (_) {
-      print(_);
-      showInfoDialog("Email dan password sudah pernah dibuat");
+
+      Timer.periodic(Duration(seconds: 5), (timer) async {
+        await user?.reload();
+        user = FirebaseAuth.instance.currentUser;
+
+        if (user?.emailVerified == true) {
+          Navigator.of(context).pop();
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DataDiriView()),
+          );
+
+          timer.cancel();
+        }
+      });
+    } catch (error) {
+      print(error);
+      showInfoDialog("Email sudah pernah dibuat");
     }
   }
 }

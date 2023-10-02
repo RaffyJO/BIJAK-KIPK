@@ -51,6 +51,8 @@ class DataDiriController extends State<DataDiriView> {
       );
     } else {
       try {
+        final FirebaseAuth _auth = FirebaseAuth.instance;
+        nama = _auth.currentUser?.displayName ?? '';
         await FirebaseFirestore.instance.collection("datadiri").add({
           'kip_number': kip_number,
           'university': university,
