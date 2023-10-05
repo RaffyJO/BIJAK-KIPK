@@ -24,6 +24,7 @@ class DataDiriController extends State<DataDiriView> {
   String kip_number = "";
   String nama = "";
   String major = "";
+  String display = "";
   String photo = "";
   String confirm_password = "";
   String university = "";
@@ -51,6 +52,9 @@ class DataDiriController extends State<DataDiriView> {
       );
     } else {
       try {
+        display = nama;
+        final FirebaseAuth _auth = FirebaseAuth.instance;
+        display = _auth.currentUser?.displayName ?? '';
         await FirebaseFirestore.instance.collection("datadiri").add({
           'kip_number': kip_number,
           'university': university,

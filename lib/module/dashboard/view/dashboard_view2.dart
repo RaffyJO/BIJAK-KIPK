@@ -4,6 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:hyper_ui/core.dart';
 
 class DashboardView2 extends StatefulWidget {
+  Future<List<DocumentSnapshot>> getExpenseDataByCurrentUser() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      String currentUserId = currentUser.uid;
+
+      QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
+          .collection("expense")
+          .where("user.uid", isEqualTo: currentUserId)
+          .orderBy("date", descending: true)
+          .get();
+
+      return expenseSnapshot.docs;
+    } else {
+      return [];
+    }
+  }
+
   final double totalAmount;
   DashboardView2({Key? key, this.totalAmount = 0.0}) : super(key: key);
 
@@ -20,6 +38,7 @@ class DashboardView2 extends StatefulWidget {
       QuerySnapshot expenseSnapshot = await FirebaseFirestore.instance
           .collection("expense")
           .where("user.uid", isEqualTo: currentUserId)
+          .orderBy("date", descending: true)
           .get();
 
       expenseSnapshot.docs.forEach((doc) {
@@ -633,12 +652,94 @@ class DashboardView2 extends StatefulWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  ExpenseItem(),
-                  ExpenseItem(),
-                  ExpenseItem(),
-                  SizedBox(
-                    height: 70,
-                  )
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 315,
+                    child: FutureBuilder<List<DocumentSnapshot>>(
+                      future: getExpenseDataByCurrentUser(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                            color: Colors.white,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("Error: ${snapshot.error}");
+                        } else {
+                          List<DocumentSnapshot> expenseDocuments =
+                              snapshot.data ?? [];
+
+                          return ListView.builder(
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot document =
+                                  expenseDocuments[index];
+                              Timestamp? date = document["datebaru"];
+                              String formattedDate = date != null
+                                  ? DateFormat('dd MMMM yyyy')
+                                      .format(date.toDate())
+                                  : "";
+                              String name = document["name"];
+                              String category = document["category"];
+                              String photo = document["photo"];
+                              num amount = document["amount"];
+
+                              return InkWell(
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ExpenseDetailPage(
+                                      documentId: document.id,
+                                    ),
+                                  ),
+                                ),
+                                child: Card(
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.grey[200],
+                                      backgroundImage: NetworkImage(photo),
+                                    ),
+                                    title: Text(
+                                      name,
+                                    ),
+                                    subtitle: Text(formattedDate),
+                                    trailing: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Text(
+                                            category[0].toUpperCase() +
+                                                category
+                                                    .substring(1)
+                                                    .toLowerCase(),
+                                            style: TextStyle(
+                                                fontSize: 15.0,
+                                                color: Color(0xFF9B51E0)),
+                                          ),
+                                          Text(
+                                            "Rp." + amount.toString(),
+                                            style: TextStyle(
+                                              fontSize: 12.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ),
                 ],
               ),
             );

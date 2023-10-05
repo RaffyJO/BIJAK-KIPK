@@ -21,17 +21,13 @@ class AddExpenseController extends State<AddExpensePageView> {
 
   String nama = "";
   String category = "";
-  int? categor = 0;
-  var categori = {1: 'primer', 2: 'sekunder', 3: 'tersier', 4: 'pendidikan'};
   String itemName = "";
   DateTime? date;
   num? amount = 0;
   String photo = "";
 
-  final List<String> options = ['Option 1', 'Option 2', 'Option 3'];
-
   DoAddExpense() async {
-    if (nama.isEmpty || category.isEmpty || itemName.isEmpty) {
+    if (nama.isEmpty || category.isEmpty || itemName.isEmpty || photo.isEmpty) {
       showDialog(
         context: context,
         builder: (context) {

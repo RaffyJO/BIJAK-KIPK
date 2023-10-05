@@ -31,8 +31,7 @@ export 'package:hyper_ui/module/expense_count/controller/expense_count_controlle
 export 'package:hyper_ui/module/expense_count/view/expense_count_view.dart';
 export 'package:hyper_ui/module/expense_detail/controller/expense_detail_controller.dart';
 export 'package:hyper_ui/module/expense_detail/view/expense_detail_view.dart';
-export 'package:hyper_ui/module/expense_list/controller/expense_list_controller.dart';
-export 'package:hyper_ui/module/expense_list/view/expense_list_view.dart';
+
 export 'package:hyper_ui/module/expense_page/expense_list_page.dart';
 export 'package:hyper_ui/module/expense_page/object/expense_item.dart';
 export 'package:hyper_ui/module/favorite/controller/favorite_controller.dart';

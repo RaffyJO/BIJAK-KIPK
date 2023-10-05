@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hyper_ui/core.dart';
 
 class AddExpensePageView extends StatefulWidget {
   const AddExpensePageView({Key? key}) : super(key: key);
 
   Widget build(context, AddExpenseController controller) {
+    String? selectedCategory;
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -31,7 +31,7 @@ class AddExpensePageView extends StatefulWidget {
               height: 20,
             ),
             Text(
-              "Expense Details",
+              "ADD Expense",
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
             ),
@@ -49,37 +49,29 @@ class AddExpensePageView extends StatefulWidget {
             SizedBox(
               height: 15,
             ),
-            // Column(
-            //   children: <Widget>[
-            //     FormBuilderRadioGroup(
-            //       decoration: InputDecoration(
-            //         labelText: "Category",
-            //         labelStyle: TextStyle(
-            //             color:
-            //                 Color(0xFF9B51E0) // Atur warna teks label di sini
-            //             ),
-            //       ),
-            //       name: 'radio_group',
-            //       initialValue: 0, // Nilai awal radio button grup
-            //       options: [
-            //         FormBuilderFieldOption(value: 1, child: Text('Primer')),
-            //         FormBuilderFieldOption(value: 2, child: Text('Sekunder')),
-            //         FormBuilderFieldOption(value: 3, child: Text('Tersier')),
-            //         FormBuilderFieldOption(value: 4, child: Text('Pendidikan')),
-            //         // Tambahkan opsi radio button sesuai kebutuhan Anda
-            //       ],
-            //       onChanged: (value) {
-            //         controller.categor = (value);
-            //       },
-            //     ),
-            //     // Tambahkan RadioFormField sesuai kebutuhan Anda
-            //   ],
-            // ),
-            QTextField(
+            QRadioField(
               label: "Category",
-              validator: Validator.required,
-              hint: "Type category",
-              onChanged: (value) {
+              validator: Validator.atLeastOneitem,
+              items: [
+                {
+                  "label": "Primer",
+                  "value": "primer",
+                },
+                {
+                  "label": "Sekunder",
+                  "value": "sekunder",
+                },
+                {
+                  "label": "Tersier",
+                  "value": "tersier",
+                },
+                {
+                  "label": "Pendidikan",
+                  "value": "pendidikan",
+                }
+              ],
+              onChanged: (value, label) {
+                print(value);
                 controller.category = (value);
               },
             ),
@@ -152,6 +144,9 @@ class AddExpensePageView extends StatefulWidget {
                 child: const Text("Request Expense"),
               ),
             ),
+            SizedBox(
+              height: 50,
+            )
           ],
         ));
   }
