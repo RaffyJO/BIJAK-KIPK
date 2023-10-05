@@ -37,8 +37,10 @@ class AddExpenseController extends State<AddExpensePageView> {
       _showErrorDialog('Harap masukkan tanggal.');
     } else {
       // Check if the same expense name exists in Firestore
+      User? currentUser = FirebaseAuth.instance.currentUser;
       final expenseQuery = await FirebaseFirestore.instance
           .collection("expense")
+          .where("user.uid", isEqualTo: currentUser?.uid)
           .where("name", isEqualTo: nama)
           .where("itemName", isEqualTo: itemName)
           .get();
