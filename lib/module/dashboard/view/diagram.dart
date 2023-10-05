@@ -350,27 +350,6 @@ class _YourWidgetState extends State<YourWidget> {
             ),
           ),
         );
-        // return AlertDialog(
-        //   title: Text("Detail Data - ${data['month']}"),
-        //   content: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     mainAxisSize: MainAxisSize.min,
-        //     children: [
-        //       Text("Primer: ${data['data']['primer']}"),
-        //       Text("Sekunder: ${data['data']['sekunder']}"),
-        //       Text("Tersier: ${data['data']['tersier']}"),
-        //       Text("Pendidikan: ${data['data']['pendidikan']}"),
-        //     ],
-        //   ),
-        //   actions: [
-        //     ElevatedButton(
-        //       onPressed: () {
-        //         Navigator.of(context).pop(); // Tutup dialog
-        //       },
-        //       child: Text("Tutup"),
-        //     ),
-        //   ],
-        // );
       },
     );
   }

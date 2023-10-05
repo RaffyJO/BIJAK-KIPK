@@ -51,10 +51,18 @@ class DataDiriController extends State<DataDiriView> {
         ),
       );
     } else {
+      String displayName = nama;
       try {
-        display = nama;
-        final FirebaseAuth _auth = FirebaseAuth.instance;
-        display = _auth.currentUser?.displayName ?? '';
+        final FirebaseAuth _akun = FirebaseAuth.instance;
+        try {
+          User? user = _akun.currentUser;
+          if (user != null) {
+            await user.updateDisplayName(displayName);
+          } else {}
+        } catch (e) {
+          print("Error: $e");
+        }
+
         await FirebaseFirestore.instance.collection("datadiri").add({
           'kip_number': kip_number,
           'university': university,

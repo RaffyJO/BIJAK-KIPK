@@ -32,7 +32,6 @@ class _FloatMainNavigationViewState extends State<FloatMainNavigationView> {
         ),
         bottomNavigationBar: BottomAppBar(
           color: const Color.fromARGB(255, 248, 248, 248),
-          // shape: const CircularNotchedRectangle(),
           notchMargin: 4,
           child: SizedBox(
             height: 71.0,
