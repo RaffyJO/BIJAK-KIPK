@@ -109,7 +109,7 @@ class DashboardView2 extends StatefulWidget {
                           padding: const EdgeInsets.all(15.0),
                           child: Container(
                             child: Text(
-                              "Welcome back " + controller.name,
+                              "Welcome Back " + controller.name,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17.0,
