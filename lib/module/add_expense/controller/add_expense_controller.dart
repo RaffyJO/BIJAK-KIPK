@@ -21,14 +21,13 @@ class AddExpenseController extends State<AddExpensePageView> {
 
   String nama = "";
   String category = "";
-
   String itemName = "";
   DateTime? date;
   num? amount = 0;
   String photo = "";
 
   DoAddExpense() async {
-    if (nama.isEmpty || category.isEmpty || itemName.isEmpty) {
+    if (nama.isEmpty || category.isEmpty || itemName.isEmpty || photo.isEmpty) {
       showDialog(
         context: context,
         builder: (context) {
