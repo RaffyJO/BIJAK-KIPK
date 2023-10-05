@@ -31,11 +31,7 @@ class LoginFormController extends State<LoginFormView> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => FloatMainNavigationView(
-            initialSelectedIndex: 0,
-          ),
-        ),
+        MaterialPageRoute(builder: (context) => akunCek()),
       );
     } catch (e) {
       showDialog(

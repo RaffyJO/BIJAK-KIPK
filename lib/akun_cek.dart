@@ -32,27 +32,34 @@ class akunCek extends StatelessWidget {
                     alignment: Alignment.center,
                     child: CircularProgressIndicator(),
                   );
-                }
-
-                if (dataDiriSnapshot.hasError) {
+                } else if (dataDiriSnapshot.hasError) {
                   return Text("Error: ${dataDiriSnapshot.error}");
-                }
-
-                final data =
-                    dataDiriSnapshot.data?.data() as Map<String, dynamic>?;
-                final major = data?['major'];
-                final nama = data?['nama'];
-                final nomorKipk = data?['kip_number'];
-
-                if (major == null || nama == null || nomorKipk == null) {
-                  // Jika ada yang belum terisi, arahkan ke DataDiriView
+                } else if (!dataDiriSnapshot.hasData ||
+                    dataDiriSnapshot.data!.exists) {
                   return DataDiriView();
                 } else {
-                  // Jika semua data terisi, arahkan ke FloatMainNavigationView
                   return FloatMainNavigationView(
                     initialSelectedIndex: 0,
                   );
                 }
+
+                // final data =
+                //     dataDiriSnapshot.data?.data() as Map<String, dynamic>?;
+                // final major = data?['major'];
+                // final nama = data?['nama'];
+                // final nomorKipk = data?['kip_number'];
+
+                // if (dataDiriSnapshot.hasError) {
+                //   return Text("Error: ${dataDiriSnapshot.error}");
+                // } else if (major == null || nama == null || nomorKipk == null) {
+                //   // Jika ada yang belum terisi, arahkan ke DataDiriView
+                //   return DataDiriView();
+                // } else {
+                //   // Jika semua data terisi, arahkan ke FloatMainNavigationView
+                //   return FloatMainNavigationView(
+                //     initialSelectedIndex: 0,
+                //   );
+                // }
               },
             );
           }

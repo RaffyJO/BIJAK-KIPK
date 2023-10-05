@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_ui/module/dashboard/view/dashboard_view2.dart';
-import '../view/chart_data_model.dart';
 
 class DashboardController extends State<DashboardView2> {
   static late DashboardController instance;
@@ -69,7 +68,7 @@ class DashboardController extends State<DashboardView2> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String name = FirebaseAuth.instance.currentUser!.displayName ??
       FirebaseAuth.instance.currentUser!.email ??
-      "Jacob";
+      "";
 
   Future<double> calculateTotalAmount() async {
     String userId;

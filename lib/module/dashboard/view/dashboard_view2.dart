@@ -109,8 +109,7 @@ class DashboardView2 extends StatefulWidget {
                           padding: const EdgeInsets.all(15.0),
                           child: Container(
                             child: Text(
-                              "Welcome Back ",
-                              semanticsLabel: currentUserId,
+                              "Welcome back " + controller.name,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17.0,
@@ -670,9 +669,10 @@ class DashboardView2 extends StatefulWidget {
                         } else {
                           List<DocumentSnapshot> expenseDocuments =
                               snapshot.data ?? [];
-
                           return ListView.builder(
-                            itemCount: 3,
+                            itemCount: expenseDocuments.length > 3
+                                ? 3
+                                : expenseDocuments.length,
                             itemBuilder: (context, index) {
                               DocumentSnapshot document =
                                   expenseDocuments[index];
