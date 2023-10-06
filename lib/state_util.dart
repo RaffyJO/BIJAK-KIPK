@@ -22,7 +22,7 @@ class Get {
     Navigator.pop(globalContext);
   }
 
-  static offAll(page) {
+  static offAll(page, {required Function(dynamic route) predicate}) {
     return navigatorKey.currentState!.pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => page),
       (Route<dynamic> route) => false,

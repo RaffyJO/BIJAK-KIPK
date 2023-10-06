@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -233,7 +234,10 @@ class _QImagePickerState extends State<QImagePicker> {
                         child: SizedBox(
                           width: 80.0,
                           child: ElevatedButton(
-                            style: Theme.of(context).elevatedButtonTheme.style,
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xFF9B51E0)),
+                            ),
                             onPressed: () => browsePhoto(),
                             child: Text(
                               "Browse",

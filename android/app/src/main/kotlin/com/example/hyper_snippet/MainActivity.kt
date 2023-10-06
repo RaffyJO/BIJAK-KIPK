@@ -1,4 +1,4 @@
-package com.example.hyper_ui
+package com.example.bijak_kipk
 
 import io.flutter.embedding.android.FlutterActivity
 

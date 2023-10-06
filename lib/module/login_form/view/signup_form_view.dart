@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../core.dart';
-import '../controller/sign_up_controller.dart';
 
 class SignUpFormView extends StatefulWidget {
   const SignUpFormView({Key? key}) : super(key: key);
@@ -13,91 +12,51 @@ class SignUpFormView extends StatefulWidget {
         appBar: AppBar(
           backgroundColor: Color(0xFF9B51E0),
           title: const Text("SignUp Form"),
-          actions: [],
+          automaticallyImplyLeading: false,
         ),
-        body: Center(
+        body: Container(
+          padding: EdgeInsets.only(top: 40),
+          height: 400,
           child: ListView(
             shrinkWrap: true,
             padding: EdgeInsets.only(left: 24.0, right: 24.0),
             children: <Widget>[
-              Text("User Detail"),
-              SizedBox(
-                height: 15,
-              ),
-              QTextField(
-                label: "Name",
-                validator: Validator.required,
-                value: "John Doe",
-                onChanged: (value) {},
-              ),
               SizedBox(
                 height: 15,
               ),
               QTextField(
                 label: "Email",
-                validator: Validator.email,
+                helper: "Masukkan Email Anda",
+                validator: Validator.required,
                 suffixIcon: Icons.email,
-                value: "demo@gmail.com",
-                onChanged: (value) {},
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              QNumberField(
-                label: "Age",
-                validator: Validator.required,
-                value: "24",
-                onChanged: (value) {},
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              QTextField(
-                label: "Name",
-                validator: Validator.required,
-                value: "John Doe",
-                onChanged: (value) {},
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              QTextField(
-                label: "Name",
-                validator: Validator.required,
-                value: "John Doe",
-                onChanged: (value) {},
+                onChanged: (value) {
+                  controller.email = (value);
+                },
               ),
               SizedBox(
                 height: 15,
               ),
               QTextField(
                 label: "Password",
-                obscure: true,
+                helper: "Masukkan Password Anda",
                 validator: Validator.required,
-                suffixIcon: Icons.password,
-                value: "123456",
-                onChanged: (value) {},
+                hint: "password berisi minimal 6 karakter",
+                suffixIcon: Icons.lock,
+                onChanged: (value) {
+                  controller.password = (value);
+                },
               ),
               SizedBox(
-                height: 15,
-              ),
-              QTextField(
-                label: "Password",
-                obscure: true,
-                validator: Validator.required,
-                suffixIcon: Icons.password,
-                value: "123456",
-                onChanged: (value) {},
-              ),
-              SizedBox(
-                height: 15,
+                height: 50,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF9B51E0),
                 ),
-                onPressed: () {},
-                child: const Text("Sign Up"),
+                onPressed: () {
+                  controller.DoSignUp();
+                },
+                child: const Text("Next"),
               ),
             ],
           ),

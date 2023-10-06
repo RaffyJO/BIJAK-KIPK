@@ -1,13 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hyper_ui/module/login_form/view/signup_form_view.dart';
+import 'package:hyper_ui/akun_cek.dart';
+import 'package:hyper_ui/state_util.dart';
+
+import 'module/button_navigator/button_navigation_bar.dart';
+import 'module/login_form/view/login_form_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runMainApp();
-}
-
-runMainApp() async {
-  return runApp(const MainApp());
+  await Firebase.initializeApp();
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -16,11 +18,22 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Capek Ngoding',
-      // navigatorKey: Get.navigatorKey,3
+      title: 'Bijak KIPK',
+      navigatorKey: Get.navigatorKey,
+      routes: {
+        '/login': (context) => LoginFormView(),
+        '/homeExpense': (context) => FloatMainNavigationView(
+              initialSelectedIndex: 1,
+            ),
+        '/home': (context) => FloatMainNavigationView(
+              initialSelectedIndex: 0,
+            ),
+        '/homeReport': (context) => FloatMainNavigationView(
+              initialSelectedIndex: 2,
+            ),
+      },
       debugShowCheckedModeBanner: false,
-      // theme: getDefaultTheme(),
-      home: SignUpFormView(),
+      home: akunCek(),
     );
   }
 }
